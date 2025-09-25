@@ -1,0 +1,288 @@
+// import { useState, useRef, useEffect } from "react";
+// import { FaShoppingBag } from "react-icons/fa";
+// import { IoSearch } from "react-icons/io5";
+// import { MdOutlineAccountCircle } from "react-icons/md";
+// // ✅ DropdownMenu Component
+// function DropdownMenu() {
+//   const [isOpen, setIsOpen] = useState(false);
+//   const toggleDropdown = () => setIsOpen(!isOpen);
+
+//   return (
+//     <div className="relative inline-block text-left">
+//       <button
+//         onClick={toggleDropdown}
+//         className="inline-flex items-center justify-center w-72 px-6 py-3 bg-green-600 text-white text-lg font-semibold rounded-full hover:bg-green-700 transition-all duration-300 shadow-md"
+//       >
+//         {/* Left Icon (Hamburger Menu) */}
+//         <svg
+//           className="w-5 h-5 mr-3"
+//           fill="none"
+//           stroke="currentColor"
+//           viewBox="0 0 24 24"
+//         >
+//           <path
+//             strokeLinecap="round"
+//             strokeLinejoin="round"
+//             strokeWidth="2"
+//             d="M4 6h16M4 12h16M4 18h16"
+//           />
+//         </svg>
+
+//         Shop By Category
+
+//         {/* Right Dropdown Arrow */}
+//         <svg
+//           className="w-5 h-5 ml-3"
+//           fill="none"
+//           stroke="currentColor"
+//           viewBox="0 0 24 24"
+//         >
+//           <path
+//             strokeLinecap="round"
+//             strokeLinejoin="round"
+//             strokeWidth="2"
+//             d="M19 9l-7 7-7-7"
+//           />
+//         </svg>
+//       </button>
+
+//       {isOpen && (
+//         <div className="absolute mt-2 w-64 bg-white rounded-md shadow-lg z-50">
+//           <ul className="py-1 text-gray-700 text-base">
+//             <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Fruits</li>
+//             <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Vegetables</li>
+//           </ul>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
+
+
+// function Navbar() {
+//   const [showSearch, setShowSearch] = useState(false);
+//   const searchRef = useRef(null);
+//   useEffect(() => {
+//     function handleClickOutside(event) {
+//       if (searchRef.current && !searchRef.current.contains(event.target)) {
+//         setShowSearch(false);
+//       }
+//     }
+
+//     if (showSearch) {
+//       document.addEventListener("mousedown", handleClickOutside);
+//     } else {
+//       document.removeEventListener("mousedown", handleClickOutside);
+//     }
+
+//     return () => document.removeEventListener("mousedown", handleClickOutside);
+//   }, [showSearch]);
+
+//   return (
+//     <>
+//       <nav className="fixed top-0 left-0 w-full z-50 bg-teal-900 border-b border-gray-200">
+//         <div className="w-full flex items-center justify-between px-10 py-4">
+//           <DropdownMenu />
+//           <ul className="flex space-x-12 text-white font-medium text-2xl mx-auto">
+//             <li>
+//               <Link to="/" className="hover:text-green-600">Home</Link>
+//             </li>
+//             <li>
+//               <Link to="/menu" className="hover:text-green-600">Menu</Link>
+//             </li>
+//             <li>
+//               <Link to="/services" className="hover:text-green-600">Services</Link>
+//             </li>
+//             <li>
+//               <Link to="/contact" className="hover:text-green-600">Contact</Link>
+//             </li>
+//           </ul>
+//           {/* Right Icons */}
+//           <div className="flex items-center space-x-10">
+//             {/* Search + Bag */}
+//             <div ref={searchRef} className="relative flex items-center space-x-10 mr-10 text-white">
+//               {/* Search Icon */}
+//               <IoSearch
+//                 className="text-3xl cursor-pointer hover:text-green-600"
+//                 onClick={() => setShowSearch(!showSearch)}
+//               />
+//               {/* Input (Open on click) */}
+//               {showSearch && (
+//                 <input
+//                   type="text"
+//                   placeholder="Search..."
+//                   autoFocus
+//                   className="bg-white text-black   pl-10  pr-10 rounded-md px-4 py-2 w-100 shadow-md outline-none transition-all duration-300 absolute right-10 top-[-4px]"
+//                 />
+//               )}
+//               {/* Bag Icon (Always visible) */}
+//               <FaShoppingBag className="text-3xl cursor-pointer hover:text-green-600" />
+//             </div>
+//             {/* Login / Signup Buttons */}
+//             <div className="flex items-center space-x-4 pr-10">
+//               <button className="flex items-center gap-2 px-4 py-2 bg-white text-black rounded-md hover:bg-green-600 hover:text-white">
+//                 <MdOutlineAccountCircle className="text-2xl" /> Login
+//               </button>
+//               <button className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-white hover:text-black">
+//                 <MdOutlineAccountCircle className="text-2xl" /> Signup
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//       </nav>
+//     </>
+//   );
+// }
+
+// export default Navbar;
+
+
+// import { useState, useRef, useEffect } from "react";
+// import { FaShoppingBag } from "react-icons/fa";
+// import { IoSearch } from "react-icons/io5";
+// import { MdOutlineAccountCircle } from "react-icons/md";
+// import { Link } from "react-router-dom";
+
+import { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";  // ✅ YEH LINE ADD KARO
+import { FaShoppingBag } from "react-icons/fa";
+import { IoSearch } from "react-icons/io5";
+import { MdOutlineAccountCircle } from "react-icons/md";
+// ✅ DropdownMenu Component
+function DropdownMenu() {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleDropdown = () => setIsOpen(!isOpen);
+
+  return (
+    <div className="relative inline-block text-left">
+      <button
+        onClick={toggleDropdown}
+        className="inline-flex items-center justify-center w-72 px-6 py-3 bg-green-600 text-white text-lg font-semibold rounded-full hover:bg-green-700 transition-all duration-300 shadow-md"
+      >
+        {/* Left Icon (Hamburger Menu) */}
+        <svg
+          className="w-5 h-5 mr-3"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+
+        Shop By Category
+
+        {/* Right Dropdown Arrow */}
+        <svg
+          className="w-5 h-5 ml-3"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
+
+      {isOpen && (
+        <div className="absolute mt-2 w-64 bg-white rounded-md shadow-lg z-50">
+          <ul className="py-1 text-gray-700 text-base">
+            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">🍎 Fruits</li>
+            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">🥦 Vegetables</li>
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ✅ Main Navbar Component
+function Navbar() {
+  const [showSearch, setShowSearch] = useState(false);
+  const searchRef = useRef(null);
+
+  // 👇 Close search when clicked outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setShowSearch(false);
+      }
+    }
+
+    if (showSearch) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showSearch]);
+
+  return (
+    <>
+      <nav className="fixed top-0 left-0 w-full z-50 bg-teal-900 border-b border-gray-200">
+        <div className="w-full flex items-center justify-between px-10 py-4">
+          
+          {/* 🔽 Left Side Dropdown */}
+          <DropdownMenu />
+                        
+          {/* Centered Menu */ }
+         
+          <ul className=" flex space-x-12 text-white font-medium text-2xl mx-auto">
+  <li><Link to="/"className="hover:text-green-600">Home </Link></li>
+  <li><Link to="/menu"className="hover:text-green-600">Menu</Link></li>
+  <li><Link to="/Fruits"className="hover:text-green-600">Fruits</Link></li>
+    <li><Link to="/Vegetable"className="hover:text-green-600">Vegetable</Link></li>
+
+  <li><Link to="/contact"className="hover:text-green-600">Contact</Link></li>
+</ul>
+          {/* Right Icons */}
+          <div className="flex items-center space-x-10">
+            {/* Search + Bag */}
+            <div ref={searchRef} className="relative flex items-center space-x-10 mr-10 text-white">
+              {/* Search Icon */}
+              <IoSearch
+                className="text-3xl cursor-pointer hover:text-green-600"
+                onClick={() => setShowSearch(!showSearch)}
+              />
+
+              {/* Input (Open on click) */}
+              {showSearch && (
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  autoFocus
+                  className="bg-white text-black   pl-10  pr-10 rounded-md px-4 py-2 w-100 shadow-md outline-none transition-all duration-300 absolute right-10 top-[-4px]"
+                />
+              )}
+
+              {/* Bag Icon (Always visible) */}
+              <FaShoppingBag className="text-3xl cursor-pointer hover:text-green-600" />
+            </div>
+
+            {/* Login / Signup Buttons */}
+            <div className="flex items-center space-x-4 pr-10">
+              <button className="flex items-center gap-2 px-4 py-2 bg-white text-black rounded-md hover:bg-green-600 hover:text-white">
+                <MdOutlineAccountCircle className="text-2xl" /> Login
+              </button>
+              <button className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-white hover:text-black">
+                <MdOutlineAccountCircle className="text-2xl" /> Signup
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </nav>
+    </>
+  );
+}
+
+export default Navbar;

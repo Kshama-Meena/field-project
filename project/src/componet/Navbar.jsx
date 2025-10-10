@@ -99,7 +99,6 @@ function Navbar() {
               { name: "Home", path: "/" },
               { name: "Menu", path: "/menu" },
               { name: "Fruits", path: "/Fruits" },
-              ++
               { name: "Vegetable", path: "/Vegetable" },
               { name: "Contact", path: "/contact" },
             ].map((item) => (

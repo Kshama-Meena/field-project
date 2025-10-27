@@ -1,89 +1,98 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { FaShoppingCart, FaHeart } from "react-icons/fa";
+import { useLike } from "./LikeContext";
+
 
 function Vegetable() {
-    const products1 = [
-        { id: 1, name: "Potato", price: "$110.00", image: "Potato.jpg" },
-        { id: 2, name: "Cucumber", price: "$90.00", image: "Cucumber.jpg" },
-        { id: 3, name: "Tameto", price: "$50.00", image: "tameto.jpg" },
-        { id: 4, name: "Matar", price: "$120.00", image: "Matar.jpg" },
-        { id: 5, name: "Chilli", price: "$99.00", image: "Chilli.jpg" },
-        { id: 6, name: "Lady’sFinger", price: "$80.00", image: "Lady’sFinger.jpg" },
-        { id: 7, name: "Bell Peppers", price: "$130.00", image: "BellPeppers.jpg" },
-        { id: 8, name: "Cauli Flower", price: "$70.00", image: "cauliflower.jpg" },
-        { id: 9, name: "Onion", price: "$100.00", image: "Onion.jpg" },
-        { id: 10, name: "Red Chilli", price: "$140.00", image: "RedChilli.jpg" },
-        { id: 11, name: "Cabbage", price: "$99.00", image: "cabbage.jpg" },
-        { id: 12, name: "Ginger", price: "$80.00", image: "Ginger.jpg" },
-        { id: 13, name: "Garlic", price: "$130.00", image: "Garlic.jpg" },
-        { id: 14, name: "Bringel", price: "$70.00", image: "Bringel.jpg" },
-        { id: 15, name: "Lime Lemon", price: "$100.00", image: "Lemon.jpg" },
-        { id: 16, name: "Bottle Groud", price: "$99.00", image: "BottleGroud.jpg" },
-        { id: 17, name: "Bitter Groud", price: "$80.00", image: "BitterGourd.jpg" },
-        { id: 18, name: "Jack Fruits", price: "$130.00", image: "Jackfruit.jpg" },
-        { id: 19, name: "Sponge Gourd", price: "$70.00", image: "SpongeGourd.jpg" },
-        { id: 20, name: "Lime Lemon", price: "$100.00", image: "Lemon.jpg" },
-        { id: 21, name: "Cabbage", price: "$99.00", image: "cabbage.jpg" },
-        { id: 22, name: "Ginger", price: "$80.00", image: "Ginger.jpg" },
-        { id: 23, name: "Garlic", price: "$130.00", image: "Garlic.jpg" },
-        { id: 24, name: "Bringel", price: "$70.00", image: "Bringel.jpg" },
-        { id: 25, name: "Lime Lemon", price: "$100.00", image: "Lemon.jpg" }
-    ];
+  const products1 = [
+    { id: 1, category: "Vegetables", name: "Potato", price: "$110.00", image: "Potato.jpg", text: "Fresh & Organic" },
+    { id: 2, category: "Vegetables", name: "Cucumber", price: "$90.00", image: "Cucumber.jpg", text: "Cool & Crisp" },
+    { id: 3, category: "Vegetables", name: "Tomato", price: "$50.00", image: "tameto.jpg", text: "Juicy & Red" },
+    { id: 4, category: "Vegetables", name: "Matar", price: "$120.00", image: "Matar.jpg", text: "Sweet & Green" },
+    { id: 5, category: "Vegetables", name: "Chilli", price: "$99.00", image: "Chilli.jpg", text: "Hot & Spicy" },
+    { id: 6, category: "Vegetables", name: "Lady’s Finger", price: "$80.00", image: "lady.jpg", text: "Soft & Fresh" },
+    { id: 7, category: "Vegetables", name: "Bell Peppers", price: "$130.00", image: "BellPeppers.jpg", text: "Colorful & Crisp" },
+    { id: 8, category: "Vegetables", name: "Cauliflower", price: "$70.00", image: "cauliflower.jpg", text: "Pure & Natural" },
+    { id: 9, category: "Vegetables", name: "Onion", price: "$100.00", image: "Onion.jpg", text: "Sharp & Fresh" },
+    { id: 10, category: "Vegetables", name: "Red Chilli", price: "$140.00", image: "RedChilli.jpg", text: "Hot & Bold" },
+  ];
 
-    return (
-        <div className="bg-gray-50">
-            {/* ✅ Hero Section */}
-            <section className="w-full h-[80vh] relative">
-                <div
-                    className="w-full h-full p-8 flex flex-col justify-center items-start bg-cover bg-center relative"
-                    style={{ backgroundImage: "url('background1.jpg')" }}
-                >
-                    {/* Dark Overlay */}
-                    <div className="absolute inset-0 bg-black/40"></div>
 
-                    <div className="relative z-10 max-w-2xl">
-                        <h2 className="text-5xl md:text-6xl font-extrabold text-white leading-snug drop-shadow-lg leading-relaxed">
-                            Fresh & Organic <br /> <span className="leading-relaxed">Vegetables Everyday</span>
-                        </h2>
-                        <p className="mt-4 text-lg md:text-xl text-gray-200 leading-snug ">
-                            Handpicked vegetables delivered fresh from farms to your kitchen.
-                        </p>
-                        <button className="mt-6 px-8 py-3 bg-green-600 text-white font-bold rounded-xl shadow-lg hover:bg-green-800 hover:scale-105 transition">
-                            Shop Vegetables
-                        </button>
-                    </div>
-                </div>
-            </section>
+  const { toggleLike, isLiked  } = useLike();
 
-            {/* ✅ Products Grid */}
-            <div className="w-full max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 p-6">
-                {products1.map((item) => (
-                    <motion.div
-                        key={item.id}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.4 }}
-                        className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center hover:shadow-2xl"
-                    >
-                        <img
-                            src={item.image}
-                            alt={item.name}
-                            className="w-32 h-32 object-contain mb-4 rounded-lg"
-                        />
-                        <h3 className="font-bold text-lg text-gray-800">{item.name}</h3>
-                        <span className="mt-2 px-3 py-1 bg-green-100 text-green-700 font-bold rounded-full">
-                            {item.price}
-                        </span>
-                        <button className="mt-4 w-full bg-gradient-to-r from-green-500 to-green-700 text-white py-2 rounded-lg font-semibold shadow hover:scale-105 hover:from-green-600 hover:to-green-800 transition-all">
-                            🛒 Add to Cart
-                        </button>
-                    </motion.div>
-                ))}
-            </div>
+
+  return (
+    <div className="bg-gray-50">
+
+      {/* Hero Section */}
+      <div className="flex flex-col md:flex-row max-w-6xl mx-auto my-12 p-6 md:p-8 bg-white rounded-lg shadow-xl">
+        <div className="md:w-1/2 pr-0 md:pr-10 py-6 md:py-10 text-center md:text-left">
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4 text-gray-800">
+            Farm-Fresh Goodness, Delivered
+          </h1>
+          <p className="text-lg md:text-xl text-gray-600 mb-6 md:mb-8">
+            Your daily source for organic vegetables, straight from the field.
+          </p>
+          <button className="bg-lime-600 text-white py-3 px-6 rounded-md text-lg font-medium hover:bg-lime-700 transition duration-300 flex items-center justify-center md:justify-start shadow-lg">
+            Browse Vegetables <span className="ml-3 text-2xl">🌿</span>
+          </button>
         </div>
-    );
+
+        <div className="md:w-1/2 flex justify-center md:justify-end items-center mt-6 md:mt-0">
+          <img
+            src="vegi.jpg"
+            alt="A wooden crate full of fresh vegetables"
+            className="w-full max-w-md md:max-w-full h-auto"
+          />
+        </div>
+      </div>
+
+      {/* Products Grid Section */}
+      <div className="bg-[#fdf6ee] py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+          {products1.map((item) => (
+            <div
+              key={item.id}
+              className="bg-white rounded-2xl shadow-md p-4 sm:p-6 text-center relative hover:shadow-lg transition-all duration-300 group"
+            >
+
+              <button
+                onClick={() => toggleLike(item)}
+                className="absolute right-3 top-3 text-xl z-10 transition-transform duration-300 hover:scale-125"
+              >
+                <FaHeart
+                  className={`${isLiked(item) ? "text-red-500" : "text-gray-400 hover:text-red-400"}`}
+                />
+
+              </button>
+
+
+
+              <img
+                src={item.image}
+                alt={item.name}
+                className="w-28 sm:w-32 md:w-36 h-28 sm:h-32 md:h-36 object-contain mx-auto mt-4 transition-transform duration-300 group-hover:scale-110"
+              />
+
+              {/* Product Info */}
+              <h3 className="mt-4 text-lg font-semibold text-gray-800">{item.name}</h3>
+              <p className="text-sm text-gray-500 border-b border-gray-200 pb-2">{item.text}</p>
+
+              {/* Price */}
+              <div className="flex justify-center items-center gap-2 mt-3">
+                <span className="text-yellow-600 font-semibold">{item.price}</span>
+              </div>
+
+              {/* Add to Cart */}
+              <button className="mt-4 sm:mt-5 bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-2 px-4 sm:px-5 rounded-full flex items-center justify-center gap-2 mx-auto transition-transform duration-300 group-hover:scale-105">
+                Add to Cart <FaShoppingCart />
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default Vegetable;

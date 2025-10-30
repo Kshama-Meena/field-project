@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaHeart, FaStar, FaShoppingCart, FaTimes } from "react-icons/fa";
 import { useLike } from "./LikeContext";
+import { Link } from "react-router-dom";
 
 export default function Wishlist() {
   const { likedItems, toggleLike } = useLike();
@@ -17,7 +18,15 @@ export default function Wishlist() {
   if (!likedItems.length) {
     return (
       <div className="text-center mt-10 p-8 text-gray-600">
-        No items in your wishlist.
+       <div className="text-center mt-16">
+          <p className="text-gray-600 text-lg mb-4">Your cart is empty.</p>
+          <Link
+            to="/"
+            className="inline-block bg-teal-700 text-white px-6 py-3 rounded-full hover:bg-teal-800 transition"
+          >
+            Continue Shopping
+          </Link>
+        </div>
       </div>
     );
   }

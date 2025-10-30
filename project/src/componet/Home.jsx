@@ -5,13 +5,11 @@ import { ShoppingCart, Headphones, Tag, Smile, Star, Search, Leaf, Apple } from 
 import { FaAppleAlt } from "react-icons/fa";
 import { FaArrowLeft } from "react-icons/fa";
 import { Truck, Clock, Zap } from 'lucide-react';
-
-// import { ChevronLeft, ChevronRight, Truck, Leaf, Smile } from "lucide-react"; // React Icons
 import { FaCheckCircle } from "react-icons/fa";
-
-
-import Menu from "./Menu";
 import TopProducts from "./TopProducts";
+import { useCart } from "./CartContext";
+import AddToCartMessage from "./AddToCartMessage";
+
 
 
 

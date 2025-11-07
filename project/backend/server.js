@@ -1,79 +1,65 @@
-// server.js
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "./models/userModel.js";
+import productRoutes from "./routes/productRoutes.js";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 🔗 MongoDB connection
 mongoose
   .connect("mongodb://127.0.0.1:27017/fruitapp")
   .then(() => console.log("✅ MongoDB Connected"))
-  .catch((err) => console.error("❌ MongoDB Error:", err));
+  .catch((err) => console.log(err));
 
-// 🔹 Signup API
+// ✅ User/Admin Signup
 app.post("/api/signup", async (req, res) => {
   try {
-    const { name, email, password, confirmPassword } = req.body;
+    const { name, email, password, role } = req.body; // role admin/user
 
-    if (password !== confirmPassword)
-      return res.status(400).json({ message: "Passwords do not match!" });
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    // ✅ Sanitize email
-    const cleanEmail = email.trim().toLowerCase();
-
-    const existingUser = await User.findOne({ email: cleanEmail });
-    if (existingUser)
-      return res.status(400).json({ message: "Email already registered" });
-
-    const hashedPassword = await bcrypt.hash(password.trim(), 10);
-
-    const newUser = new User({
-      name: name.trim(),
-      email: cleanEmail,
+    const user = new User({
+      name,
+      email: email.toLowerCase(),
       password: hashedPassword,
+      role: role || "user", // default user
     });
 
-    await newUser.save();
-    res.status(201).json({ message: "Signup successful!" });
+    await user.save();
+    res.json({ message: "Signup Successful" });
+
   } catch (error) {
-    console.error("Signup Error:", error);
-    res.status(500).json({ message: "Server error", error });
+    res.json({ message: "Signup Failed", error });
   }
 });
 
-// 🔹 Login API
+// ✅ Login (User + Admin same route)
 app.post("/api/login", async (req, res) => {
-  try {
-    const { email, password } = req.body;
+  const { email, password } = req.body;
 
-    // ✅ sanitize inputs
-    const cleanEmail = email.trim().toLowerCase();
-    const user = await User.findOne({ email: cleanEmail });
+  const user = await User.findOne({ email: email.toLowerCase() });
+  if (!user) return res.json({ message: "User not found" });
 
-    if (!user)
-      return res.status(400).json({ message: "User not found" });
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) return res.json({ message: "Wrong password" });
 
-    const isPasswordValid = await bcrypt.compare(password.trim(), user.password);
-    if (!isPasswordValid)
-      return res.status(400).json({ message: "Invalid credentials" });
+  const token = jwt.sign(
+    { id: user._id, role: user.role },
+    "secret",
+    { expiresIn: "7d" }
+  );
 
-    const token = jwt.sign({ id: user._id }, "SECRET_KEY", { expiresIn: "1d" });
-
-    res.json({ 
-      message: "Login successful",
-      token,
-      user: { name: user.name, email: user.email },
-    });
-  } catch (error) {
-    console.error("Login Error:", error);
-    res.status(500).json({ message: "Server error", error });
-  }
+  res.json({
+    message: `${user.role} login successful`,
+    user: { name: user.name, email: user.email, role: user.role },
+    token
+  });
 });
 
-app.listen(5000, () => console.log("🚀 Server running on http://localhost:5000"));
+app.use("/api/products", productRoutes);
+
+app.listen(5000, () => console.log("🚀 Server running on 5000"));

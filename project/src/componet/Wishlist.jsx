@@ -69,7 +69,8 @@ export default function Wishlist() {
         {/* Products Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {sortedProducts.map((product) => (
-            <div key={`${product.category}-${product.id}`}
+            <div key={`${product._id}-${product.category}`}
+
               className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 relative border border-gray-100 p-2"
             >
               {/* Remove from wishlist button */}
@@ -92,19 +93,7 @@ export default function Wishlist() {
 
               {/* Product Details */}
               <div className="p-4 pt-1 text-center">
-                {/* Rating */}
-                <div className="flex justify-center mb-2">
-                  {[...Array(5)].map((_, i) => (
-                    <span
-                      key={i}
-                      className={`text-lg ${
-                        i < product.rating ? "text-[#ffd700]" : "text-gray-300"
-                      }`}
-                    >
-                      <FaStar />
-                    </span>
-                  ))}
-                </div>
+                
 
                 {/* Name & Price */}
                 <h3 className="text-lg font-semibold text-gray-800 mb-1">

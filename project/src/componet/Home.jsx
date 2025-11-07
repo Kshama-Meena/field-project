@@ -27,7 +27,7 @@ function FoodLanding() {
           backgroundImage: "url('new1.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
+          baccgroundRepeat: "no-repeat",
           backgroundColor: "#f9f9f9",
         }}
       >
@@ -365,7 +365,6 @@ export default function Home() {
 
   return (
     <>
-      <Navbar />
 
      
       <FoodLanding />

@@ -1,5 +1,4 @@
-
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation, Outlet } from "react-router-dom";
 import Navbar from "./componet/Navbar";
 import Footer from "./componet/Footer";
 import Home from "./componet/Home";
@@ -15,6 +14,13 @@ import { LikeProvider } from "./componet/LikeContext";
 import CartPage from "./componet/CartPage";
 import { CartProvider } from "./componet/CartContext";
 import { Toaster } from "react-hot-toast";
+import { AnimatePresence } from "framer-motion";
+import PageTransition from "./componet/PageTransition";
+import { AuthProvider } from "./componet/AuthContext";
+import  UserProfile  from "./componet/UserProfile"// ✅ Import Auth Context
+import AddProduct from "./componet/AddProduct";
+import AdminLayout from "./componet/AdminLayout";
+
 function MainLayout() {
   return (
     <>
@@ -27,7 +33,6 @@ function MainLayout() {
   );
 }
 
-// ✅ Layout jisme sirf Navbar (Footer nahi)
 function NoFooterLayout() {
   return (
     <>
@@ -39,35 +44,53 @@ function NoFooterLayout() {
   );
 }
 
+// ✅ Route Transition Wrapper
+function AnimatedRoutes() {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <Routes key={location.pathname} location={location}>
+        
+        {/* ✅ Footer Pages */}
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+          <Route path="/menu" element={<PageTransition><Menu /></PageTransition>} />
+          <Route path="/vegetables" element={<PageTransition><Vegetable /></PageTransition>} />
+          <Route path="/fruits" element={<PageTransition><Fruits /></PageTransition>} />
+          <Route path="/services" element={<PageTransition><Services /></PageTransition>} />
+          <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
+        </Route>
+
+        {/* ❌ Without Footer */}
+        <Route element={<NoFooterLayout />}>
+          <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
+          <Route path="/signup" element={<PageTransition><SignUp /></PageTransition>} />
+          <Route path="/wishlist" element={<PageTransition><Wishlist /></PageTransition>} />
+          <Route path="/cart" element={<PageTransition><CartPage /></PageTransition>} />
+          <Route path="/profile" element={<PageTransition><UserProfile /></PageTransition>} />
+
+
+        </Route>
+<Route path="/add-product" element={<AddProduct />} />
+           <Route path="/AdminLayout" element={<AdminLayout />} />
+      </Routes>
+    </AnimatePresence>
+  );
+}
+
 function App() {
   return (
-    
+    <AuthProvider>
     <LikeProvider>
       <CartProvider>
         <Router>
-          <Routes>
-            {/* ✅ Footer ke sath wale pages */}
-            <Route element={<MainLayout />}>
-              <Route path="/" element={<Home />} />
-              <Route path="/menu" element={<Menu />} />
-              <Route path="/vegetables" element={<Vegetable />} />
-              <Route path="/fruits" element={<Fruits />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/contact" element={<Contact />} />
-            </Route>
-
-            {/* 🚫 Footer bina wale pages */}
-            <Route element={<NoFooterLayout />}>
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/wishlist" element={<Wishlist />} />
-              <Route path="/cart" element={<CartPage />} />
-            </Route>
-          </Routes>
+          <AnimatedRoutes />
         </Router>
-         <Toaster position="top-center" reverseOrder={false} />
+        <Toaster position="top-center" reverseOrder={false} />
       </CartProvider>
     </LikeProvider>
+    </AuthProvider>
   );
 }
 

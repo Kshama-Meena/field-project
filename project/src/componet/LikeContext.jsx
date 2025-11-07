@@ -31,28 +31,24 @@ export const LikeProvider = ({ children }) => {
   }, [likedItems]);
 
   // Toggle Like function
-  const toggleLike = (product) => {
-    setLikedItems((prev) => {
-      const exists = prev.find(
-        (item) => item.id === product.id && item.category === product.category
-      );
-      if (exists) {
-        showPopup("💔 Removed from Favorites");
-        return prev.filter(
-          (item) =>
-            !(item.id === product.id && item.category === product.category)
-        );
-      } else {
-        showPopup("💚 Added to Favorites!");
-        return [...prev, product];
-      }
-    });
-  };
+  // Toggle Like function
+const toggleLike = (product) => {
+  setLikedItems((prev) => {
+    const exists = prev.find((item) => item._id === product._id);
 
-  const isLiked = (product) =>
-    likedItems.some(
-      (item) => item.id === product.id && item.category === product.category
-    );
+    if (exists) {
+      showPopup("💔 Removed from Favorites");
+      return prev.filter((item) => item._id !== product._id);
+    } else {
+      showPopup("💚 Added to Favorites!");
+      return [...prev, product];
+    }
+  });
+};
+
+const isLiked = (product) =>
+  likedItems.some((item) => item._id === product._id);
+
 
   // Popup handler
   const showPopup = (message) => {

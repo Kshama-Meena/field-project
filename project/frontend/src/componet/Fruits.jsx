@@ -28,7 +28,7 @@ function Fruits() {
       <section
         className="relative w-full h-[95vh] bg-contain bg-right bg-no-repeat bg-fixed bg-white"
         style={{
-          backgroundImage: "url('frutsh.jpg')",
+          backgroundImage: "url('https://res.cloudinary.com/ds8w1kut5/image/upload/v1766763290/frutsh_a1qoyy.png')",
           backgroundSize: 'contain',
           backgroundPosition: 'right',
         }}

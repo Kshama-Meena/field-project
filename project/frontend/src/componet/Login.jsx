@@ -140,7 +140,7 @@ const Login = () => {
         </div>
 
         <div className="hidden md:block md:w-1/2">
-          <img src="login.jpg" alt="Food" className="w-full h-full object-cover" />
+          <img src="https://res.cloudinary.com/ds8w1kut5/image/upload/v1766763332/login_igf4da.png" alt="Food" className="w-full h-full object-cover" />
         </div>
       </div>
     </div>

@@ -50,7 +50,7 @@ function Vegetable() {
 
         <div className="md:w-1/2 flex justify-center md:justify-end items-center mt-6 md:mt-0">
           <img
-            src="vegi.jpg"
+            src="https://res.cloudinary.com/ds8w1kut5/image/upload/v1766763411/vegi_dj5nwi.png"
             alt="A wooden crate full of fresh vegetables"
             className="w-full max-w-md md:max-w-full h-auto"
           />

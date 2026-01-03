@@ -110,7 +110,7 @@ function FoodLanding() {
           {/* ---------- RIGHT IMAGE SECTION ---------- */}
           <div className="relative w-full md:w-[45%] flex items-center justify-end overflow-hidden mt-10 md:mt-0">
   <img
-    src="/bowl.png"
+    src="https://res.cloudinary.com/ds8w1kut5/image/upload/v1766763538/bowl_pddmxo.png"
     alt="Salad Bowl"
     className="w-full max-w-[450px] h-auto object-contain"
   />
@@ -151,7 +151,7 @@ function WhyChooseUs() {
       <div
         className="mx-auto py-6 sm:py-8 md:py-10 px-4 sm:px-6 md:px-8 mt-3 rounded-3xl shadow-xl"
         style={{
-          backgroundImage: "url('new.jpg')",
+          backgroundImage: "url('https://res.cloudinary.com/ds8w1kut5/image/upload/v1766763353/new_hd2vs0.png')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -195,19 +195,19 @@ function WhyChooseUs() {
 function Slider() {
   const slides = [
     {
-      image: "/slide1.jpg",
+      image: "https://res.cloudinary.com/ds8w1kut5/image/upload/v1766763385/slide1_zeufua.png",
       title: "The Fresh Organic",
       highlight: "Vegetables",
       subtitle: "Vegetables You Should Be Eating",
     },
     {
-      image: "/slide2.jpg",
+      image: "https://res.cloudinary.com/ds8w1kut5/image/upload/v1766763390/slide2_lhxwye.png",
       title: "Healthy & Juicy",
       highlight: "Fruits",
       subtitle: "Get the Best from Nature",
     },
     {
-      image: "/slide3.jpg",
+      image: "https://res.cloudinary.com/ds8w1kut5/image/upload/v1766763390/slide3_mfjlpj.png",
       title: "100% Organic Farm",
       highlight: "Goodness",
       subtitle: "Eat Fresh, Live Fresh",

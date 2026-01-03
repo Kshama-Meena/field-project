@@ -12,6 +12,7 @@ import sendMailRoute from "./routes/sendMail.js";
 import userRoutes from "./routes/userRoutes.js";
 import settingsRoutes from "./routes/settingsRoutes.js";
 import adminRoutes from "./routes/admin.js";
+import uploadRoutes from "./routes/uploadRoutes.js";
 import dotenv from "dotenv";
 
 const app = express();
@@ -180,6 +181,7 @@ app.use("/api", sendMailRoute);
 app.use("/api/users", userRoutes);
 app.use("/api/settings", settingsRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/upload", uploadRoutes);
 
 // ✅ Start Server
 app.listen(5000, () => console.log("🚀 Server running on port 5000"));

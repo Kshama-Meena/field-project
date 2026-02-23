@@ -4,6 +4,7 @@ import { useLike } from "./context/LikeContext";
 import { FaRegHeart, FaShoppingCart , FaHeart} from "react-icons/fa";
 import { useCart } from "./context/CartContext";
 import { useAuth } from "./context/AuthContext";
+import ProductCard from "./ProductCard";
 function Vegetable() {
   const [products1, setProducts1] = useState([]);
 
@@ -61,47 +62,14 @@ function Vegetable() {
       <div className="bg-[#fdf6ee] py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
           {products1.map((item) => (
-            <div
-              key={item._id}
-              className="bg-white rounded-2xl shadow-md p-4 sm:p-6 text-center relative hover:shadow-lg transition-all duration-300 group"
-            >
-
-             <button
-                              onClick={() => toggleLike(item)}
-                              className="absolute right-3 top-3 text-2xl z-10 transition-transform duration-300 hover:scale-125"
-                            >
-                              {isLiked(item._id) ? (
-                                <FaHeart className="text-red-500" />
-                              ) : (
-                                <FaRegHeart className="text-gray-400 hover:text-red-400" />
-                              )}
-                            </button>
-
-              <img
-                src={item.image}
-                alt={item.name}
-                className="w-28 sm:w-32 md:w-36 h-28 sm:h-32 md:h-36 object-contain mx-auto mt-4 transition-transform duration-300 group-hover:scale-110"
-              />
-
-              <h3 className="mt-4 text-lg font-semibold text-gray-800">{item.name}</h3>
-              <p className="text-sm text-gray-500 border-b border-gray-200 pb-2">{item.text}</p>
-
-              <div className="flex justify-center items-center gap-2 mt-3">
-                <span className="text-yellow-600 font-semibold">${item.price}</span>
-              </div>
-
-              <button
-              onClick={() => {
-                  if (!user) {
-                    alert("Please login first!");
-                    return;
-                  }
-                  addToCart(item);
-                }} className="mt-4 sm:mt-5 bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-2 px-4 sm:px-5 rounded-full flex items-center justify-center gap-2 mx-auto transition-transform duration-300 group-hover:scale-105">
-                Add to Cart <FaShoppingCart />
-              </button>
-
-            </div>
+             <ProductCard
+                           key={item._id}
+                           product={item}
+                           toggleLike={toggleLike}
+                           isLiked={isLiked}
+                           addToCart={addToCart}
+                           user={user}
+                         />
           ))}
         </div>
       </div>

@@ -1,31 +1,45 @@
 import express from "express";
 import Cart from "../models/Cart.js";
+import mongoose from "mongoose";
 
 const router = express.Router();
 
-// Load user cart
+// GET cart (return empty if not exists)
 router.get("/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
 
+    // Agar userId valid ObjectId nahi hai to error
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ error: "Invalid user ID" });
+    }
+
     let cart = await Cart.findOne({ userId });
 
+    // Agar cart nahi mila to naya bana do (empty cart)
     if (!cart) {
-      cart = new Cart({ userId, items: [] });
+      cart = new Cart({
+        userId,
+        items: [],
+      });
       await cart.save();
     }
 
-    res.json(cart);
+    res.status(200).json(cart); // hamesha 200 + cart object (items array ke saath)
   } catch (error) {
-    res.status(500).json({ error: "Error loading cart" });
+    console.error("GET CART ERROR:", error);
+    res.status(500).json({ error: "Server error while loading cart" });
   }
 });
 
-// Add to cart
+// ADD to cart
 router.post("/add", async (req, res) => {
   try {
-    console.log("REQ BODY:", req.body);
     const { userId, productId, name, price, image } = req.body;
+
+    if (!userId || !productId) {
+      return res.status(400).json({ error: "userId and productId required" });
+    }
 
     let cart = await Cart.findOne({ userId });
 
@@ -38,48 +52,74 @@ router.post("/add", async (req, res) => {
     if (existing) {
       existing.quantity += 1;
     } else {
-      cart.items.push({ productId, name, price, image, quantity: 1 });
+      cart.items.push({
+        productId,
+        name,
+        price: Number(price),
+        image,
+        quantity: 1,
+      });
     }
 
     await cart.save();
-    res.json(cart);
+    res.status(200).json(cart);
   } catch (error) {
+    console.error("ADD TO CART ERROR:", error);
     res.status(500).json({ error: "Error adding to cart" });
   }
 });
 
+// Increase quantity
 router.put("/increase/:userId/:productId", async (req, res) => {
   try {
     const { userId, productId } = req.params;
 
     const cart = await Cart.findOne({ userId });
 
-    const item = cart.items.find(i => i.productId === productId);
-    item.quantity += 1;
+    if (!cart) {
+      return res.status(404).json({ error: "Cart not found" });
+    }
 
-    await cart.save();
-    res.json(cart);
+    const item = cart.items.find((i) => i.productId === productId);
+    if (item) {
+      item.quantity += 1;
+      await cart.save();
+      return res.status(200).json(cart);
+    }
+
+    res.status(404).json({ error: "Item not found in cart" });
   } catch (error) {
-    res.status(500).json({ error: "Error increasing quantity" });
+    console.error("INCREASE ERROR:", error);
+    res.status(500).json({ error: "Server error" });
   }
 });
 
-// Decrease qty
+// Decrease quantity
 router.put("/decrease/:userId/:productId", async (req, res) => {
   try {
     const { userId, productId } = req.params;
 
     const cart = await Cart.findOne({ userId });
 
-    const item = cart.items.find(i => i.productId === productId);
+    if (!cart) return res.status(404).json({ error: "Cart not found" });
 
-    if (item.quantity > 1) item.quantity -= 1;
-    else cart.items = cart.items.filter(i => i.productId !== productId);
+    const itemIndex = cart.items.findIndex((i) => i.productId === productId);
+
+    if (itemIndex === -1) {
+      return res.status(404).json({ error: "Item not found" });
+    }
+
+    if (cart.items[itemIndex].quantity > 1) {
+      cart.items[itemIndex].quantity -= 1;
+    } else {
+      cart.items.splice(itemIndex, 1);
+    }
 
     await cart.save();
-    res.json(cart);
+    res.status(200).json(cart);
   } catch (error) {
-    res.status(500).json({ error: "Error decreasing quantity" });
+    console.error("DECREASE ERROR:", error);
+    res.status(500).json({ error: "Server error" });
   }
 });
 
@@ -90,12 +130,15 @@ router.delete("/delete/:userId/:productId", async (req, res) => {
 
     const cart = await Cart.findOne({ userId });
 
-    cart.items = cart.items.filter(item => item.productId !== productId);
+    if (!cart) return res.status(404).json({ error: "Cart not found" });
+
+    cart.items = cart.items.filter((item) => item.productId !== productId);
 
     await cart.save();
-    res.json(cart);
+    res.status(200).json(cart);
   } catch (error) {
-    res.status(500).json({ error: "Error deleting item" });
+    console.error("DELETE ERROR:", error);
+    res.status(500).json({ error: "Server error" });
   }
 });
 

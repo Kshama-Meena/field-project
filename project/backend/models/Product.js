@@ -9,10 +9,16 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  price: {
-    type: Number,
-    required: true
-  },
+    prices: {
+    "500g": {
+      type: Number,
+      required: true
+    },
+    "1kg": {
+      type: Number,
+      required: true
+    }
+  }, 
   category: {
     type: String,
     enum: ["fruit", "vegetable"],

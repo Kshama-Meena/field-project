@@ -61,14 +61,14 @@ export default function Menu() {
       </section>
 
       {/* Product Section */}
-      <div className="bg-[#fdf6ee] min-h-screen py-12 px-6">
+      <div className="bg-[#f0fdf4] min-h-screen py-12 px-6">
 
         {/* ⭐ VEGETABLES SECTION */}
         <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
           Fresh <span className="text-green-600">Vegetables</span>
         </h2>
 
-        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 lg:gap-10">
+        <div className="max-w-8xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {vegetables.slice(0, 4).map((item) => (
             <ProductCard
               key={item._id}
@@ -86,7 +86,7 @@ export default function Menu() {
           Juicy <span className="text-yellow-600">Fruits</span>
         </h2>
 
-        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 lg:gap-10">
+        <div className="max-w-8xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {fruits.slice(0, 4).map((item) => (
             <ProductCard
               key={item._id}

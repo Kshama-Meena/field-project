@@ -58,7 +58,7 @@ export default function ProductCard({
   return (
     <>
       <motion.div
-        className="relative bg-gradient-to-br from-white to-emerald-50/40 rounded-3xl shadow-xl border border-emerald-100/70 overflow-hidden group hover:shadow-2xl hover:border-emerald-300/80 transition-all duration-400 w-full max-w-[340px] sm:max-w-[360px] lg:max-w-[380px]"
+        className="relative bg-gradient-to-br m-10 from-white to-emerald-50/40 rounded-3xl shadow-xl border border-emerald-100/70 overflow-hidden group hover:shadow-2xl hover:border-emerald-300/80 transition-all duration-400 w-full max-w-[340px] sm:max-w-[360px] lg:max-w-[380px]"
         whileHover={{ scale: 1.05, y: -10 }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
       >

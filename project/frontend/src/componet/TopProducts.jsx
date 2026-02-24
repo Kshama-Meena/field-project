@@ -5,7 +5,7 @@ import axios from "axios";
 import { useLike } from "./context/LikeContext";
 import { useCart } from "./context/CartContext";
 import { useAuth } from "./context/AuthContext";
-
+import ProductCard from "./ProductCard";
 export default function TopProducts() {
   const [activeTab, setActiveTab] = useState("fruit");
   const [products, setProducts] = useState([]);
@@ -69,81 +69,4 @@ export default function TopProducts() {
 
 /* ================= PRODUCT CARD ================= */
 
-function ProductCard({ product, toggleLike, isLiked, addToCart, user }) {
-  const [weight, setWeight] = useState("1kg");
 
-  return (
-    <motion.div
-      className="bg-white rounded-2xl shadow-md p-6 text-center relative hover:shadow-lg transition-all duration-300"
-      whileHover={{ scale: 1.03 }}
-    >
-      {/* Like */}
-      <button
-        onClick={() => toggleLike(product)}
-        className="absolute right-3 top-3 text-2xl"
-      >
-        {isLiked(product._id) ? (
-          <FaHeart className="text-red-500" />
-        ) : (
-          <FaRegHeart className="text-gray-400 hover:text-red-400" />
-        )}
-      </button>
-
-      {/* Image (Cloudinary fix) */}
-      <img
-        src={product.image}
-        alt={product.name}
-        className="w-36 h-36 object-contain mx-auto mt-4"
-      />
-
-      {/* Name */}
-      <h3 className="mt-4 text-lg font-semibold text-gray-800">
-        {product.name}
-      </h3>
-
-      {/* Text */}
-      <p className="text-sm text-gray-500">{product.text}</p>
-
-      {/* Weight selector */}
-      <div className="flex justify-center gap-3 mt-4">
-        {["500g", "1kg"].map((w) => (
-          <button
-            key={w}
-            onClick={() => setWeight(w)}
-            className={`px-4 py-1 rounded-full text-sm font-semibold transition ${
-              weight === w
-                ? "bg-green-600 text-white"
-                : "bg-gray-200 text-gray-700 hover:bg-green-100"
-            }`}
-          >
-            {w}
-          </button>
-        ))}
-      </div>
-
-      {/* Price */}
-      <p className="mt-3 text-xl font-bold text-yellow-600">
-        ₹{product.prices[weight]}
-      </p>
-
-      {/* Add to Cart */}
-      <button
-        onClick={() => {
-          if (!user) {
-            alert("Please login first!");
-            return;
-          }
-
-          addToCart({
-            ...product,
-            selectedWeight: weight,
-            price: product.prices[weight],
-          });
-        }}
-        className="mt-4 bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-2 px-6 rounded-full flex items-center gap-2 mx-auto"
-      >
-        Add to Cart <FaShoppingCart />
-      </button>
-    </motion.div>
-  );
-}

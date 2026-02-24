@@ -13,25 +13,25 @@ export default function Menu() {
   const { addToCart } = useCart();
   const { user } = useAuth();
   const { setCartCount } = useCart();
-  const { toggleLike, isLiked } = useLike(); 
+  const { toggleLike, isLiked } = useLike();
 
-useEffect(() => {
-  const fetchProducts = async () => {
-    try {
-      const res = await axios.get("http://localhost:5000/api/products");
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/products");
 
-      const all = res.data;
+        const all = res.data;
 
-      setFruits(all.filter(p => p.category === "fruit"));
-      setVegetables(all.filter(p => p.category === "vegetable"));
+        setFruits(all.filter(p => p.category === "fruit"));
+        setVegetables(all.filter(p => p.category === "vegetable"));
 
-    } catch (error) {
-      console.log("PRODUCT FETCH ERROR:", error);
-    }
-  };
+      } catch (error) {
+        console.log("PRODUCT FETCH ERROR:", error);
+      }
+    };
 
-  fetchProducts();
-}, []);
+    fetchProducts();
+  }, []);
 
 
 
@@ -39,8 +39,10 @@ useEffect(() => {
     <div>
 
       {/* Hero Section */}
-      <section className="relative w-full h-[95vh] bg-contain bg-right bg-no-repeat bg-fixed" style={{ backgroundImage: "url('https://res.cloudinary.com/ds8w1kut5/image/upload/v1766763217/background1_kf1yfz.png')" , backgroundSize: 'contain',
-          backgroundPosition: 'right',}}>
+      <section className="relative w-full h-[95vh] bg-contain bg-right bg-no-repeat bg-fixed" style={{
+        backgroundImage: "url('https://res.cloudinary.com/ds8w1kut5/image/upload/v1766763217/background1_kf1yfz.png')", backgroundSize: 'contain',
+        backgroundPosition: 'right',
+      }}>
         <div className="absolute inset-0 bg-black/40"></div>
         <div className="relative z-10 flex items-center h-full px-6 md:px-16">
           <div className="max-w-2xl text-left">
@@ -59,45 +61,45 @@ useEffect(() => {
       </section>
 
       {/* Product Section */}
-<div className="bg-[#fdf6ee] min-h-screen py-12 px-6">
+      <div className="bg-[#fdf6ee] min-h-screen py-12 px-6">
 
-  {/* ⭐ VEGETABLES SECTION */}
-  <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
-    Fresh <span className="text-green-600">Vegetables</span>
-  </h2>
+        {/* ⭐ VEGETABLES SECTION */}
+        <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
+          Fresh <span className="text-green-600">Vegetables</span>
+        </h2>
 
-  <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-    {vegetables.slice(0, 4).map((item) => (
-       <ProductCard
-                     key={item._id}
-                     product={item}
-                     toggleLike={toggleLike}
-                     isLiked={isLiked}
-                     addToCart={addToCart}
-                     user={user}
-                   />
-    ))}
-  </div>
+        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 lg:gap-10">
+          {vegetables.slice(0, 4).map((item) => (
+            <ProductCard
+              key={item._id}
+              product={item}
+              toggleLike={toggleLike}
+              isLiked={isLiked}
+              addToCart={addToCart}
+              user={user}
+            />
+          ))}
+        </div>
 
-  {/* ⭐ FRUITS SECTION */}
-  <h2 className="text-3xl font-bold text-gray-800 mt-16 mb-8 text-center">
-    Juicy <span className="text-yellow-600">Fruits</span>
-  </h2>
+        {/* ⭐ FRUITS SECTION */}
+        <h2 className="text-3xl font-bold text-gray-800 mt-16 mb-8 text-center">
+          Juicy <span className="text-yellow-600">Fruits</span>
+        </h2>
 
-  <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-    {fruits.slice(0, 4).map((item) => (
-        <ProductCard
-                      key={item._id}
-                      product={item}
-                      toggleLike={toggleLike}
-                      isLiked={isLiked}
-                      addToCart={addToCart}
-                      user={user}
-                    />
-    ))}
-  </div>
+        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 lg:gap-10">
+          {fruits.slice(0, 4).map((item) => (
+            <ProductCard
+              key={item._id}
+              product={item}
+              toggleLike={toggleLike}
+              isLiked={isLiked}
+              addToCart={addToCart}
+              user={user}
+            />
+          ))}
+        </div>
 
-</div>
+      </div>
 
 
     </div>

@@ -59,8 +59,8 @@ function Vegetable() {
       </div>
 
       {/* Products List */}
-      <div className="bg-[#fdf6ee] py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+      <div className="bg-[#f0fdf4] py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-8xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
           {products1.map((item) => (
              <ProductCard
                            key={item._id}

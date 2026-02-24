@@ -15,7 +15,7 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen py-20 px-4 md:px-10 lg:px-20 font-sans ">
+    <div className="min-h-screen bg-[#f0fdf4] py-20 px-4 md:px-10 lg:px-20 font-sans ">
       
       {/* --- HEADER SECTION (Matching Homepage) --- */}
       <div className="text-center mb-12">

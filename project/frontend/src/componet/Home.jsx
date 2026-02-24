@@ -19,7 +19,7 @@ function FoodLanding() {
   const [showOrderOptions, setShowOrderOptions] = useState(false);
 
 
-  return ( 
+  return (
     <div className="bg-green-50">
       <div
         className="min-h-screen flex flex-col md:flex-row items-center justify-center px-4 sm:px-6 md:px-10 lg:px-16 py-10 md:py-16 relative overflow-hidden rounded-3xl"
@@ -109,12 +109,12 @@ function FoodLanding() {
 
           {/* ---------- RIGHT IMAGE SECTION ---------- */}
           <div className="relative w-full md:w-[45%] flex items-center justify-end overflow-hidden mt-10 md:mt-0">
-  <img
-    src="https://res.cloudinary.com/ds8w1kut5/image/upload/v1766763538/bowl_pddmxo.png"
-    alt="Salad Bowl"
-    className="w-full max-w-[450px] h-auto object-contain"
-  />
-</div>
+            <img
+              src="https://res.cloudinary.com/ds8w1kut5/image/upload/v1766763538/bowl_pddmxo.png"
+              alt="Salad Bowl"
+              className="w-full max-w-[450px] h-auto object-contain"
+            />
+          </div>
 
         </div>
       </div>
@@ -174,7 +174,7 @@ function WhyChooseUs() {
                 {feature.icon}
               </div>
 
-             
+
               <div>
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900">
                   {feature.title}
@@ -245,7 +245,7 @@ function Slider() {
     <div className="relative bg-gray-50 py-8 sm:py-10 md:py-16">
       {/* Main Slider Container */}
       <div className="relative w-full max-w-7xl mx-auto overflow-hidden rounded-3xl shadow-2xl h-[450px] sm:h-[550px] md:h-[600px] lg:h-[650px]">
-        
+
         {/* Background */}
         <div
           className="absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-700"
@@ -260,9 +260,8 @@ function Slider() {
 
           {/* LEFT TEXT */}
           <div
-            className={`w-full md:w-1/2 text-white text-center md:text-left transition-opacity duration-700 ${
-              fade ? "opacity-0" : "opacity-100"
-            } space-y-4 sm:space-y-6`}
+            className={`w-full md:w-1/2 text-white text-center md:text-left transition-opacity duration-700 ${fade ? "opacity-0" : "opacity-100"
+              } space-y-4 sm:space-y-6`}
           >
             <p className="text-green-200 text-base sm:text-lg md:text-xl font-semibold tracking-wide">
               {slides[currentIndex].subtitle}
@@ -299,9 +298,8 @@ function Slider() {
 
           {/* RIGHT IMAGE */}
           <div
-            className={`w-full md:w-1/2 h-60 sm:h-80 md:h-full flex items-center justify-center relative transition-opacity duration-700 ${
-              fade ? "opacity-0" : "opacity-100"
-            }`}
+            className={`w-full md:w-1/2 h-60 sm:h-80 md:h-full flex items-center justify-center relative transition-opacity duration-700 ${fade ? "opacity-0" : "opacity-100"
+              }`}
           >
             <img
               src={slides[currentIndex].image}
@@ -317,11 +315,10 @@ function Slider() {
             <button
               key={idx}
               onClick={() => handleTransition(idx)}
-              className={`w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full transition-all ${
-                idx === currentIndex
+              className={`w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full transition-all ${idx === currentIndex
                   ? "bg-lime-400 scale-110"
                   : "bg-white/60"
-              }`}
+                }`}
             ></button>
           ))}
         </div>
@@ -365,14 +362,10 @@ export default function Home() {
   return (
     <>
 
-     
       <FoodLanding />
       <WhyChooseUs />
       <Slider />
       <TopProducts />
-     
-
-
 
 
     </>

@@ -59,7 +59,7 @@ function Fruits() {
       </section>
 
       {/* Products Section */}
-      <div className="bg-[#fdf6ee] min-h-screen py-12 px-4 md:px-8">
+      <div className="bg-[#f0fdf4] min-h-screen py-12 px-4 md:px-8">
         <h2 className="text-4xl md:text-5xl font-extrabold text-gray-800 text-center mb-12">
           Fresh <span className="text-yellow-600">Fruits</span>
         </h2>
@@ -74,7 +74,7 @@ function Fruits() {
             <p className="text-xl">No fruits available right now.</p>
           </div>
         ) : (
-          <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+          <div className="max-w-8xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
             {products.map((item) => (
               <ProductCard
                 key={item._id}

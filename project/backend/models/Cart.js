@@ -8,6 +8,7 @@ const cartSchema = new mongoose.Schema({
       name: String,
       price: Number,
       image: String,
+      unit: { type: String, default: "kg" },
       quantity: { type: Number, default: 1 }
     }
   ]

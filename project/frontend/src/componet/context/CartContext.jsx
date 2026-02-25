@@ -46,12 +46,15 @@ export const CartProvider = ({ children }) => {
       return;
     }
 
-    // Optimistic update (instant feedback)
+    // Prefer the explicitly-selected weight if provided
+    const unit = product.selectedWeight || product.unit || "kg";
+
+    // Optimistic update (instant feedback) - treat productId+unit as unique key
     setCart((prev) => {
-      const exists = prev.find((item) => item.productId === productId);
+      const exists = prev.find((item) => item.productId === productId && item.unit === unit);
       if (exists) {
         return prev.map((item) =>
-          item.productId === productId
+          item.productId === productId && item.unit === unit
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
@@ -63,6 +66,8 @@ export const CartProvider = ({ children }) => {
           name: product.name,
           price: product.price,
           image: product.image,
+          unit,
+          selectedWeight: product.selectedWeight || null,
           quantity: 1,
         },
       ];
@@ -75,6 +80,7 @@ export const CartProvider = ({ children }) => {
         name: product.name,
         price: product.price,
         image: product.image,
+        unit, // send selected weight/unit to server
       });
 
       // Sync with server response
@@ -87,13 +93,13 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  const changeQuantity = async (productId, delta) => {
+  const changeQuantity = async (productId, delta, unit = "kg") => {
     if (!userId) return;
 
     // Optimistic
     setCart((prev) =>
       prev.map((item) =>
-        item.productId === productId
+        item.productId === productId && item.unit === unit
           ? { ...item, quantity: Math.max(1, item.quantity + delta) }
           : item
       )
@@ -102,7 +108,7 @@ export const CartProvider = ({ children }) => {
     try {
       const endpoint = delta > 0 ? "increase" : "decrease";
       const res = await axios.put(
-        `http://localhost:5000/api/cart/${endpoint}/${userId}/${productId}`
+        `http://localhost:5000/api/cart/${endpoint}/${userId}/${productId}?unit=${encodeURIComponent(unit)}`
       );
       setCart(res.data.items || []);
     } catch (error) {
@@ -111,18 +117,18 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  const addQuantity = (productId) => changeQuantity(productId, 1);
-  const removeQuantity = (productId) => changeQuantity(productId, -1);
+  const addQuantity = (productId, unit) => changeQuantity(productId, 1, unit);
+  const removeQuantity = (productId, unit) => changeQuantity(productId, -1, unit);
 
-  const removeFromCart = async (productId) => {
+  const removeFromCart = async (productId, unit = "kg") => {
     if (!userId) return;
 
     // Optimistic remove
-    setCart((prev) => prev.filter((item) => item.productId !== productId));
+    setCart((prev) => prev.filter((item) => !(item.productId === productId && item.unit === unit)));
 
     try {
       const res = await axios.delete(
-        `http://localhost:5000/api/cart/delete/${userId}/${productId}`
+        `http://localhost:5000/api/cart/delete/${userId}/${productId}?unit=${encodeURIComponent(unit)}`
       );
       setCart(res.data.items || []);
       toast.success("Item removed");

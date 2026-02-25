@@ -32,10 +32,10 @@ router.get("/:userId", async (req, res) => {
   }
 });
 
-// ADD to cart
+// ADD to cart - treat productId + unit as unique key
 router.post("/add", async (req, res) => {
   try {
-    const { userId, productId, name, price, image } = req.body;
+    const { userId, productId, name, price, image, unit } = req.body;
 
     if (!userId || !productId) {
       return res.status(400).json({ error: "userId and productId required" });
@@ -47,7 +47,10 @@ router.post("/add", async (req, res) => {
       cart = new Cart({ userId, items: [] });
     }
 
-    const existing = cart.items.find((item) => item.productId === productId);
+    // Search by productId + unit (same product with different weight = different item)
+    const existing = cart.items.find(
+      (item) => item.productId === productId && item.unit === (unit || "kg")
+    );
 
     if (existing) {
       existing.quantity += 1;
@@ -57,6 +60,7 @@ router.post("/add", async (req, res) => {
         name,
         price: Number(price),
         image,
+        unit: unit || "kg",
         quantity: 1,
       });
     }
@@ -69,10 +73,12 @@ router.post("/add", async (req, res) => {
   }
 });
 
-// Increase quantity
+// Increase quantity - accept unit as query param
 router.put("/increase/:userId/:productId", async (req, res) => {
   try {
     const { userId, productId } = req.params;
+    const { unit } = req.query;
+    const searchUnit = unit || "kg";
 
     const cart = await Cart.findOne({ userId });
 
@@ -80,7 +86,9 @@ router.put("/increase/:userId/:productId", async (req, res) => {
       return res.status(404).json({ error: "Cart not found" });
     }
 
-    const item = cart.items.find((i) => i.productId === productId);
+    const item = cart.items.find(
+      (i) => i.productId === productId && i.unit === searchUnit
+    );
     if (item) {
       item.quantity += 1;
       await cart.save();
@@ -94,16 +102,20 @@ router.put("/increase/:userId/:productId", async (req, res) => {
   }
 });
 
-// Decrease quantity
+// Decrease quantity - accept unit as query param
 router.put("/decrease/:userId/:productId", async (req, res) => {
   try {
     const { userId, productId } = req.params;
+    const { unit } = req.query;
+    const searchUnit = unit || "kg";
 
     const cart = await Cart.findOne({ userId });
 
     if (!cart) return res.status(404).json({ error: "Cart not found" });
 
-    const itemIndex = cart.items.findIndex((i) => i.productId === productId);
+    const itemIndex = cart.items.findIndex(
+      (i) => i.productId === productId && i.unit === searchUnit
+    );
 
     if (itemIndex === -1) {
       return res.status(404).json({ error: "Item not found" });
@@ -123,16 +135,20 @@ router.put("/decrease/:userId/:productId", async (req, res) => {
   }
 });
 
-// Delete item
+// Delete item - accept unit as query param
 router.delete("/delete/:userId/:productId", async (req, res) => {
   try {
     const { userId, productId } = req.params;
+    const { unit } = req.query;
+    const searchUnit = unit || "kg";
 
     const cart = await Cart.findOne({ userId });
 
     if (!cart) return res.status(404).json({ error: "Cart not found" });
 
-    cart.items = cart.items.filter((item) => item.productId !== productId);
+    cart.items = cart.items.filter(
+      (item) => !(item.productId === productId && item.unit === searchUnit)
+    );
 
     await cart.save();
     res.status(200).json(cart);

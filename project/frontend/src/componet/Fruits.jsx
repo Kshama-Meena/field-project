@@ -82,17 +82,14 @@ function Fruits() {
                 toggleLike={toggleLike}
                 isLiked={isLiked}
                 addToCart={addToCart}
+                unit = {item.unit || "kg"} // Default to "kg" if unit is not provided
                 user={user}
               />
             ))}
           </div>
         )}
 
-        <div className="text-center mt-12">
-          <button className="bg-yellow-400 text-gray-800 font-extrabold py-3 px-10 rounded-full border-2 border-yellow-600 hover:bg-yellow-500 hover:scale-105 transition-all duration-300 shadow-xl">
-            Browse All Products
-          </button>
-        </div>
+        
       </div>
     </>
   );

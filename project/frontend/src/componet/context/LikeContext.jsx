@@ -26,49 +26,80 @@ export const LikeProvider = ({ children }) => {
   }, [user]);
 
   // ✅ Fetch liked products
-  const fetchLikes = async () => {
-    try {
-      setLoading(true);
-      const res = await axios.get(`http://localhost:5000/api/like/${user._id}`);
-      setLikedItems(res.data.map((like) => like.productId));
-    } catch (err) {
-      console.error("Error fetching liked items:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+ const fetchLikes = async () => {
+  try {
+    setLoading(true);
+    const res = await axios.get(`http://localhost:5000/api/like/${user._id}`);
+
+    // Safe mapping: skip null IDs, convert to strings, and dedupe
+    const validIds = res.data
+      .filter(like => like?.productId != null)
+      .map(like => like.productId.toString());
+
+    setLikedItems(Array.from(new Set(validIds)));
+  } catch (err) {
+    console.error("Error fetching liked items:", err);
+    setLikedItems([]); // error pe empty kar do
+  } finally {
+    setLoading(false);
+  }
+};
 
   // ✅ Toggle Like / Unlike
-  const toggleLike = async (product) => {
-    if (!user) {
-      setShowPopup(true);
-      return;
-    }
+const toggleLike = async (product) => {
+  if (!user || !user._id) {
+    setShowPopup(true);
+    console.warn("User not logged in or user._id missing");
+    return;
+  }
 
-    try {
-      setLoading(true);
-      const alreadyLiked = likedItems.some((p) => p._id === product._id);
+  if (!product || !product._id) {
+    console.error("Product or product._id missing:", product);
+    alert("Cannot add to favorites - invalid product");
+    return;
+  }
 
-      if (alreadyLiked) {
-        await axios.delete(
-          `http://localhost:5000/api/like/${user._id}/${product._id}`
-        );
-        setLikedItems((prev) => prev.filter((p) => p._id !== product._id));
-      } else {
-        await axios.post("http://localhost:5000/api/like", {
-          userId: user._id,
-          productId: product._id,
-        });
-        setLikedItems((prev) => [...prev, product]);
-      }
-    } catch (error) {
-      console.error("Error toggling like:", error);
-    } finally {
-      setLoading(false);
+  try {
+    setLoading(true);
+    const userIdStr = user._id.toString();
+    const productIdStr = product._id.toString();
+
+    console.log("Sending like request:", { userId: userIdStr, productId: productIdStr }); // ← Debug ke liye
+
+    const alreadyLiked = isLiked(product._id);
+
+    if (alreadyLiked) {
+      await axios.delete(`http://localhost:5000/api/like/${userIdStr}/${productIdStr}`);
+      setLikedItems(prev => prev.filter(id => id !== productIdStr));
+    } else {
+      const response = await axios.post("http://localhost:5000/api/like", {
+        userId: userIdStr,
+        productId: productIdStr,
+      }, {
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      console.log("Like response:", response.data);
+      // Prevent duplicates (handles race or server duplicates)
+      setLikedItems(prev => Array.from(new Set([...prev, productIdStr])));
     }
+  } catch (error) {
+    console.error("Toggle like failed:", error);
+    if (error.response?.status === 400) {
+      alert(error.response.data.message || "Invalid request - check login/product");
+    } else {
+      alert("Network error while updating favorites");
+    }
+  } finally {
+    setLoading(false);
+  }
+};
+
+  const isLiked = (productId) => {
+    if (!productId) return false;
+    const id = typeof productId === "string" ? productId : productId.toString();
+    return likedItems.includes(id);
   };
-
-  const isLiked = (productId) => likedItems.some((p) => p._id === productId);
 
   // ✅ Login Popup
   const LoginPopup = () => (

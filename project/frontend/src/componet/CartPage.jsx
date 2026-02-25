@@ -26,14 +26,13 @@ export default function CartPage() {
   const totalDeliveryFee = deliveryFeePerItem.reduce((sum, fee) => sum + fee, 0);
   const toPay = itemTotal + totalDeliveryFee;
 
-  // Remove confirmation handler
   const handleRemoveClick = (item) => {
-    setConfirmRemove({ id: item.productId || item._id, name: item.name });
+    setConfirmRemove({ id: item.productId || item._id, name: item.name, unit: item.unit || "kg" });
   };
 
   const confirmRemoveItem = () => {
     if (confirmRemove) {
-      removeFromCart(confirmRemove.id);
+      removeFromCart(confirmRemove.id, confirmRemove.unit);
       setConfirmRemove(null);
     }
   };
@@ -151,7 +150,7 @@ export default function CartPage() {
                             {item.name}
                           </h3>
                           <p className="text-xs text-slate-500 mt-1">
-                            ₹{item.price.toFixed(2)} / {item.unit || "unit"}
+                            ₹{item.price.toFixed(2)} / {item.unit || "kg"}
                           </p>
                         </div>
                         <button
@@ -166,7 +165,7 @@ export default function CartPage() {
                       <div className="flex items-center justify-between mt-2">
                         <div className="flex items-center gap-1 rounded-full bg-slate-50 p-1 border border-slate-100">
                           <button
-                            onClick={() => removeQuantity(item.productId || item._id)}
+                            onClick={() => removeQuantity(item.productId || item._id, item.unit || "kg")}
                             disabled={item.quantity <= 1}
                             className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-emerald-700 shadow-sm hover:bg-slate-100 disabled:opacity-50 transition"
                           >
@@ -188,7 +187,7 @@ export default function CartPage() {
                           </AnimatePresence>
 
                           <button
-                            onClick={() => addQuantity(item.productId || item._id)}
+                            onClick={() => addQuantity(item.productId || item._id, item.unit || "kg")}
                             className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-700 text-white shadow-sm hover:bg-emerald-800 transition"
                           >
                             <Plus size={18} />

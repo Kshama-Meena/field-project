@@ -34,6 +34,24 @@ router.get("/:category", async (req, res) => {
   res.json(products);
 });
 
+// ✅ Get products by array of IDs (wishlist)
+router.post('/wishlist', async (req, res) => {
+  try {
+    const { ids } = req.body;
+    if (!Array.isArray(ids) || ids.length === 0) return res.json([]);
+
+    // Filter valid ObjectId strings to avoid CastError
+    const mongoose = await import("mongoose");
+    const validIds = ids.filter((id) => mongoose.Types.ObjectId.isValid(id));
+    if (validIds.length === 0) return res.json([]);
+
+    const products = await Product.find({ _id: { $in: validIds } });
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // ✅ Add Product (Auto increment ID)
 router.post("/admin/add-product", async (req, res) => {
   try {

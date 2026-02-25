@@ -6,6 +6,8 @@ import { useLike } from "./context/LikeContext";
 import { useCart } from "./context/CartContext";
 import { useAuth } from "./context/AuthContext";
 import ProductCard from "./ProductCard";
+import { Link } from "react-router-dom"; // ← Yeh import add kiya (button ke liye)
+
 export default function TopProducts() {
   const [activeTab, setActiveTab] = useState("fruit");
   const [products, setProducts] = useState([]);
@@ -29,6 +31,10 @@ export default function TopProducts() {
     (p) => p.category === activeTab
   );
 
+  // View All button ka link tab ke hisaab se
+  const viewAllLink = activeTab === "fruit" ? "/fruits" : "/vegetables";
+  const viewAllText = activeTab === "fruit" ? "View All Fruits" : "View All Vegetables";
+
   return (
     <div className="w-full px-6 py-12 bg-green-50">
       <h2 className="text-4xl font-bold text-center mb-10">Top Products</h2>
@@ -50,6 +56,16 @@ export default function TopProducts() {
         ))}
       </div>
 
+      {/* View All Button - Tab ke hisaab se */}
+      <div className="text-center mb-8">
+        <Link
+          to={viewAllLink}
+          className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+        >
+          {viewAllText} →
+        </Link>
+      </div>
+
       {/* Products */}
       <div className="max-w-8xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {filteredProducts.slice(0, 4).map((product) => (
@@ -66,7 +82,3 @@ export default function TopProducts() {
     </div>
   );
 }
-
-/* ================= PRODUCT CARD ================= */
-
-

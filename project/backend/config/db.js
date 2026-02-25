@@ -1,8 +1,17 @@
 // config/db.js
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import { fileURLToPath } from "url";
+import path from "path";
 
-dotenv.config(); // .env file load karne ke liye
+// Load .env. First try default lookup, then fallback to backend/.env when started from workspace root
+dotenv.config();
+if (!process.env.MONGO_URL) {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  // backend/config -> ../.env points to backend/.env
+  dotenv.config({ path: path.join(__dirname, "../.env") });
+}
 
 const connectDB = async () => {
   try {

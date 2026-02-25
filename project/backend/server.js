@@ -346,6 +346,8 @@ import http from "http";
 import { Server } from "socket.io";
 import multer from "multer";
 import fs from "fs";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 // DB Connection (alag file se)
 import connectDB from "./config/db.js";

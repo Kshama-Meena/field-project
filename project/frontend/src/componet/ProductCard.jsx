@@ -1,4 +1,3 @@
-// src/components/ProductCard.jsx
 import React, { useState } from "react";
 import { FaHeart, FaRegHeart, FaShoppingCart, FaEye } from "react-icons/fa";
 import { motion } from "framer-motion";
@@ -10,12 +9,16 @@ export default function ProductCard({
   addToCart,
   user,
 }) {
-  const [weight, setWeight] = useState("1kg");
+  // Default weight: agar prices object hai to pehla key, warna "1kg"
+  const defaultWeight = product.prices && Object.keys(product.prices).length > 0
+    ? Object.keys(product.prices)[0]
+    : "1kg";
+
+  const [weight, setWeight] = useState(defaultWeight);
   const [showLikePopup, setShowLikePopup] = useState(false);
   const [likeMessage, setLikeMessage] = useState("");
   const [showDetailsModal, setShowDetailsModal] = useState(false);
 
-  // Generate short random-like description based on product name
   const getShortDescription = (name) => {
     const nameLower = name.toLowerCase();
     if (nameLower.includes("apple") || nameLower.includes("seb"))
@@ -49,7 +52,8 @@ export default function ProductCard({
 
     addToCart({
       ...product,
-      selectedWeight: weight,
+      selectedWeight: weight,                     // price variant / pack size
+      unit: product.unit || "kg",                 // real unit (dozen, piece, kg etc)
       price: product.prices?.[weight] || product.price || 0,
       quantity: 1,
     });
@@ -62,9 +66,8 @@ export default function ProductCard({
         whileHover={{ scale: 1.05, y: -10 }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
       >
-        {/* Top Right Icons - Always Visible */}
+        {/* Top Right Icons */}
         <div className="absolute top-4 right-4 flex flex-col gap-3 z-20">
-          {/* Like Button */}
           <motion.button
             whileTap={{ scale: 0.85 }}
             onClick={handleToggleLike}
@@ -77,7 +80,6 @@ export default function ProductCard({
             )}
           </motion.button>
 
-          {/* Eye / Quick View Button */}
           <motion.button
             whileTap={{ scale: 0.85 }}
             onClick={() => setShowDetailsModal(true)}
@@ -87,7 +89,7 @@ export default function ProductCard({
           </motion.button>
         </div>
 
-        {/* Larger Image Section */}
+        {/* Image */}
         <div className="relative h-56 sm:h-64 lg:h-65 flex items-center justify-center overflow-hidden bg-gradient-to-b from-gray-50 to-white">
           <img
             src={product.image?.trim() || "https://via.placeholder.com/300?text=Product"}
@@ -97,7 +99,7 @@ export default function ProductCard({
           />
         </div>
 
-        {/* Compact Content Section */}
+        {/* Content */}
         <div className="p-5 lg:p-6">
           <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-2 truncate">
             {product.name}
@@ -107,30 +109,33 @@ export default function ProductCard({
             {getShortDescription(product.name)}
           </p>
 
-          {/* Weight Selector - Compact */}
-          <div className="flex flex-wrap justify-center gap-2 mb-4">
-            {Object.keys(product.prices || {}).length > 0 ? (
-              Object.keys(product.prices).map((w) => (
-                <motion.button
-                  key={w}
-                  whileTap={{ scale: 0.92 }}
-                  onClick={() => setWeight(w)}
-                  className={`px-3.5 py-1.5 rounded-full text-xs lg:text-sm font-medium transition-all duration-300 ${
-                    weight === w
-                      ? "bg-emerald-600 text-white shadow-md"
-                      : "bg-gray-100 text-gray-700 hover:bg-emerald-100 hover:text-emerald-800"
-                  }`}
-                >
-                  {w}
-                </motion.button>
-              ))
-            ) : (
-              <span className="text-xs lg:text-sm text-gray-500 italic">No weights available</span>
-            )}
-          </div>
+          {/* Weight / Variant Selector */}
+      {/* Weight / Variant Selector */}
+<div className="flex flex-wrap justify-center gap-2 mb-4">
+  {product.prices && Object.keys(product.prices).length > 0 ? (
+    Object.keys(product.prices).map((unitKey) => (
+      <motion.button
+        key={unitKey}
+        whileTap={{ scale: 0.92 }}
+        onClick={() => setWeight(unitKey)}
+        className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border ${
+          weight === unitKey
+            ? "bg-emerald-600 text-white border-emerald-700 shadow-md"
+            : "bg-white text-gray-700 border-gray-300 hover:bg-emerald-50 hover:border-emerald-300"
+        }`}
+      >
+        {unitKey}  {/* ← yahin pe already "1kg", "500g", "2kg", "1 dozen" jo bhi hai wahi dikhega */}
+      </motion.button>
+    ))
+  ) : (
+    <span className="text-sm text-gray-500 italic px-4 py-2">
+      {product.unit ? `Per ${product.unit}` : "Standard pack"}
+    </span>
+  )}
+</div>
 
-          {/* Price - Bigger & Centered */}
-          <div className="flex items-center justify-center gap-3 mb-5">
+          {/* Price */}
+          <div className="flex items-center justify-center gap-3 mb-2">
             <span className="text-2xl lg:text-3xl font-extrabold text-emerald-700">
               ₹{product.prices?.[weight] || product.price || "—"}
             </span>
@@ -141,7 +146,14 @@ export default function ProductCard({
             )}
           </div>
 
-          {/* Add to Cart - Full Width */}
+          {/* Unit Display */}
+          <div className="text-center mb-5">
+            <span className="text-sm lg:text-base text-emerald-600 font-semibold">
+              Per {product.unit || "kg"}
+            </span>
+          </div>
+
+          {/* Add to Cart */}
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={handleAddToCart}
@@ -196,15 +208,44 @@ export default function ProductCard({
               {getShortDescription(product.name)} {product.text || ""}
             </p>
 
-            <div className="flex justify-between items-center mb-6">
+            {/* Weight selector in modal */}
+            <div className="flex flex-wrap justify-center gap-2 mb-6">
+              {product.prices && Object.keys(product.prices).length > 0 ? (
+                Object.keys(product.prices).map((w) => (
+                  <motion.button
+                    key={w}
+                    whileTap={{ scale: 0.92 }}
+                    onClick={() => setWeight(w)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium ${
+                      weight === w
+                        ? "bg-emerald-600 text-white"
+                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    }`}
+                  >
+                    {w}
+                  </motion.button>
+                ))
+              ) : (
+                <span className="text-gray-600">Standard pack</span>
+              )}
+            </div>
+
+            <div className="text-center mb-2">
               <span className="text-3xl font-bold text-emerald-700">
                 ₹{product.prices?.[weight] || product.price || "—"}
               </span>
               {product.oldPrice && (
-                <span className="text-xl text-gray-500 line-through">
+                <span className="text-xl text-gray-500 line-through ml-3">
                   ₹{product.oldPrice}
                 </span>
               )}
+            </div>
+
+            {/* Unit Display in Modal */}
+            <div className="text-center mb-6">
+              <span className="text-lg text-emerald-600 font-semibold">
+                Available per {product.unit || "kg"}
+              </span>
             </div>
 
             <button

@@ -103,28 +103,102 @@
 //     </div>
 //   );
 // }
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { FaShoppingCart } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useLike } from "./context/LikeContext";
 import { useCart } from "./context/CartContext";
 import { Link } from "react-router-dom";
-import ProductCard from "./ProductCard"; // ← Yeh import kar liya (same jo Menu mein use ho raha hai)
+import ProductCard from "./ProductCard";
 
 export default function Wishlist() {
-  const { likedItems, toggleLike } = useLike();
+  const { likedItems: likedIds, toggleLike } = useLike(); // ← yeh sirf IDs (strings) hain
   const { addToCart } = useCart();
-  const [sortBy, setSortBy] = useState("price-low");
 
-  // Sorting logic (same as before)
-  const sortedProducts = [...likedItems].sort((a, b) => {
-    if (sortBy === "price-low") return a.price - b.price;
-    if (sortBy === "price-high") return b.price - a.price;
-    if (sortBy === "name-asc") return a.name.localeCompare(b.name);
+  const [products, setProducts] = useState([]); // ← yahan FULL product objects aayenge
+  const [sortBy, setSortBy] = useState("price-low");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch full products using liked IDs
+  useEffect(() => {
+    const fetchWishlistProducts = async () => {
+      if (!likedIds?.length) {
+        setProducts([]);
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Backend endpoint jo IDs se products return kare
+        const res = await axios.post("http://localhost:5000/api/products/wishlist", {
+          ids: likedIds,
+        });
+
+        const fetchedProducts = res.data || [];
+        setProducts(fetchedProducts);
+      } catch (err) {
+        console.error("Error fetching wishlist products:", err);
+        setError("Failed to load wishlist items");
+        setProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWishlistProducts();
+  }, [likedIds]);
+
+  // Safe sorting with fallbacks
+  const sortedProducts = [...products].sort((a, b) => {
+    // Default price fallback agar prices object missing ho
+    const getPrice = (item) => {
+      if (item.prices && Object.keys(item.prices).length > 0) {
+        const firstKey = Object.keys(item.prices)[0];
+        return item.prices[firstKey] || 0;
+      }
+      return item.price || 0;
+    };
+
+    const priceA = getPrice(a);
+    const priceB = getPrice(b);
+
+    if (sortBy === "price-low") return priceA - priceB;
+    if (sortBy === "price-high") return priceB - priceA;
+    if (sortBy === "name-asc") return (a.name || "").localeCompare(b.name || "");
     return 0;
   });
 
-  if (!likedItems.length) {
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-2xl text-emerald-600 animate-pulse">Loading your wishlist...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center p-8">
+          <h2 className="text-3xl font-bold text-red-600 mb-4">Oops!</h2>
+          <p className="text-lg text-gray-700">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-6 px-6 py-3 bg-emerald-600 text-white rounded-full hover:bg-emerald-700"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!sortedProducts.length) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-green-50 via-white to-lime-50 flex items-center justify-center">
         <div className="text-center p-8">
@@ -156,7 +230,7 @@ export default function Wishlist() {
               Your Wishlist
             </h1>
             <span className="font-semibold text-emerald-700 bg-emerald-50 px-4 py-1 rounded-full">
-              {likedItems.length} Items
+              {sortedProducts.length} Items
             </span>
           </div>
 
@@ -183,16 +257,16 @@ export default function Wishlist() {
           </div>
         </div>
 
-          {/* Product Grid */}
+        {/* Product Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {sortedProducts.map((product) => (
             <ProductCard
-              key={product._id}
+              key={product._id || Math.random().toString(36).substr(2, 9)} // fallback unique key
               product={product}
               toggleLike={toggleLike}
-              isLiked={(id) => likedItems.some((item) => item._id === id)}
+              isLiked={(id) => likedIds.includes(id?.toString())}
               addToCart={addToCart}
-              user={{}} 
+              user={{}} // agar user context se chahiye to useAuth() se le lo
             />
           ))}
         </div>

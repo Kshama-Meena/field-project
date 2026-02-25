@@ -1,189 +1,144 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "./Navbar";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { ShoppingCart, Headphones, Tag, Smile, Star, Search, Leaf, Apple } from "lucide-react";
-import { FaAppleAlt } from "react-icons/fa";
-import { FaArrowLeft } from "react-icons/fa";
-import { Truck, Clock, Zap } from 'lucide-react';
-import { FaCheckCircle } from "react-icons/fa";
+import { motion } from "framer-motion"; // Added for premium feel
+import { ChevronLeft, ChevronRight, ShoppingCart, Leaf, Truck, Clock, Zap, Smile } from "lucide-react";
+import { FaAppleAlt, FaArrowLeft, FaCheckCircle } from "react-icons/fa";
 import TopProducts from "./TopProducts";
-import { useCart } from "./context/CartContext";
-import AddToCartMessage from "./AddToCartMessage";
 
-
-
-
-
+// ---------- HERO SECTION (FOOD LANDING) ----------
 function FoodLanding() {
-  const [quantity, setQuantity] = useState(2);
   const [showOrderOptions, setShowOrderOptions] = useState(false);
 
-
   return (
-    <div className="bg-green-50">
+    <div className="bg-green-50/50">
       <div
-        className="min-h-screen flex flex-col md:flex-row items-center justify-center px-4 sm:px-6 md:px-10 lg:px-16 py-10 md:py-16 relative overflow-hidden rounded-3xl"
+        className="min-h-[90vh] flex flex-col md:flex-row items-center justify-center px-6 md:px-16 lg:px-24 py-12 md:py-20 relative overflow-hidden"
         style={{
-          backgroundImage: "url('new1.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          baccgroundRepeat: "no-repeat",
-          backgroundColor: "#f9f9f9",
+          backgroundImage: "linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url('https://www.transparenttextures.com/patterns/cubes.png')",
+          backgroundColor: "#f0fdf4",
         }}
       >
-        <div className="max-w-7xl w-full flex flex-col md:flex-row items-center gap-10 md:gap-16 lg:gap-24 relative z-10">
+        <div className="max-w-8xl w-full flex flex-col md:flex-row items-center gap-12 lg:gap-20 relative z-10">
+          
+          {/* LEFT CONTENT */}
+          <motion.div 
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className="flex-1 text-center md:text-left"
+          >
+            <motion.div 
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-bold mb-6"
+            >
+              <Leaf className="w-4 h-4" /> 100% ORGANIC & FRESH
+            </motion.div>
 
-          {/* ---------- LEFT CONTENT ---------- */}
-          <div className="flex-1 text-center md:text-left px-2 sm:px-4">
-            <h1 className="text-3xl sm:text-4xl md:text-4xl lg:text-6xl xl:text-7xl font-extrabold text-gray-900 leading-snug sm:leading-tight">
-              <span className="text-green-600 block md:inline-block ">
-                Your Daily Dose of
-              </span>{" "}
-              <span className="text-orange-500 block md:inline-block md:text-3xl">
-                Freshness, Just a Click Away
-              </span>
+            <h1 className="text-5xl sm:text-6xl lg:text-8xl font-black text-gray-900 leading-[1.1] tracking-tight">
+              <span className="text-green-600 block">Your Daily Dose of</span>
+              <span className="text-orange-500 italic font-serif">Freshness</span>
             </h1>
 
-            <p className="mt-4 sm:mt-6 text-gray-600 text-sm sm:text-base md:text-lg lg:text-xl max-w-md mx-auto md:mx-0 leading-relaxed">
-              Fresh and organic fruits & vegetables delivered straight to your
-              door.{" "}
-              <span className="font-semibold text-gray-800">
-                Healthy, Tasty, and Super Fresh!
-              </span>
+            <p className="mt-8 text-gray-600 text-lg md:text-2xl max-w-xl mx-auto md:mx-0 leading-relaxed font-medium">
+              Experience the taste of nature. Premium fruits & vegetables 
+              delivered <span className="text-green-600 font-bold underline decoration-orange-400">straight from the fields</span> to your kitchen.
             </p>
 
-            {/* ---------- BUTTONS ---------- */}
-            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row flex-wrap gap-4 justify-center md:justify-start">
+            {/* BUTTONS */}
+            <div className="mt-10 flex flex-col sm:flex-row flex-wrap gap-5 justify-center md:justify-start">
               {!showOrderOptions ? (
                 <>
-                  {/* 🔶 ORDER NOW BUTTON */}
                   <button
                     onClick={() => setShowOrderOptions(true)}
-                    className="flex items-center justify-center px-6 sm:px-8 py-3 text-sm sm:text-base md:text-lg border border-transparent rounded-full shadow-lg text-white bg-orange-500 hover:bg-orange-600 transition duration-300 transform hover:scale-105 w-full sm:w-auto"
+                    className="flex items-center justify-center px-10 py-5 text-lg font-bold rounded-2xl shadow-2xl text-white bg-orange-500 hover:bg-orange-600 transition-all transform hover:-translate-y-1 w-full sm:w-auto"
                   >
                     Order Now
-                    <ShoppingCart className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
+                    <ShoppingCart className="ml-2 w-6 h-6" />
                   </button>
 
-                  {/* 🟢 EXPLORE MENU BUTTON */}
                   <button
                     onClick={() => (window.location.href = '/menu')}
-                    className="flex items-center justify-center px-6 sm:px-8 py-3 text-sm sm:text-base md:text-lg border-2 border-green-600 rounded-full text-black hover:bg-green-600 hover:text-white transition duration-300 shadow-md w-full sm:w-auto"
+                    className="flex items-center justify-center px-10 py-5 text-lg font-bold border-2 border-green-600 rounded-2xl text-green-700 hover:bg-green-600 hover:text-white transition-all shadow-lg w-full sm:w-auto"
                   >
                     Explore Menu
-                    <ChevronRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
+                    <ChevronRight className="ml-2 w-6 h-6" />
                   </button>
                 </>
               ) : (
-                <>
-                  {/* 🍎 Order Fruits */}
+                <div className="flex flex-wrap gap-4 animate-in fade-in slide-in-from-left-4">
                   <button
                     onClick={() => (window.location.href = '/fruits')}
-                    className="px-6 py-3 bg-orange-100 hover:bg-orange-200 text-orange-800 rounded-full font-semibold border border-orange-300 shadow transition flex items-center gap-2 justify-center w-full sm:w-auto text-sm sm:text-base"
+                    className="px-8 py-4 bg-orange-100 hover:bg-orange-500 hover:text-white text-orange-800 rounded-2xl font-bold border-2 border-orange-200 transition-all flex items-center gap-3"
                   >
-                    <FaAppleAlt className="w-4 h-4 sm:w-5 sm:h-5" />
-                    Order Fruits
+                    <FaAppleAlt className="w-5 h-5" /> Order Fruits
                   </button>
-
-                  {/* 🥕 Order Vegetables */}
                   <button
                     onClick={() => (window.location.href = '/vegetables')}
-                    className="px-6 py-3 bg-green-100 hover:bg-green-200 text-green-800 rounded-full font-semibold border border-green-300 shadow transition flex items-center gap-2 justify-center w-full sm:w-auto text-sm sm:text-base"
+                    className="px-8 py-4 bg-green-100 hover:bg-green-600 hover:text-white text-green-800 rounded-2xl font-bold border-2 border-green-200 transition-all flex items-center gap-3"
                   >
-                    <Leaf className="w-4 h-4 sm:w-5 sm:h-5" />
-                    Order Vegetables
+                    <Leaf className="w-5 h-5" /> Order Vegetables
                   </button>
-
-                  {/* 🔙 Back */}
                   <button
                     onClick={() => setShowOrderOptions(false)}
-                    className="px-6 py-3 border border-gray-300 text-gray-900 rounded-full hover:bg-gray-100 transition flex items-center gap-2 justify-center w-full sm:w-auto text-sm sm:text-base"
+                    className="px-6 py-4 border-2 border-gray-300 text-gray-600 rounded-2xl hover:bg-gray-100 transition-all flex items-center gap-2"
                   >
-                    <FaArrowLeft className="w-3 h-3 sm:w-4 sm:h-4" />
-                    Back
+                    <FaArrowLeft />
                   </button>
-                </>
+                </div>
               )}
             </div>
-          </div>
+          </motion.div>
 
-          {/* ---------- RIGHT IMAGE SECTION ---------- */}
-          <div className="relative w-full md:w-[45%] flex items-center justify-end overflow-hidden mt-10 md:mt-0">
+          {/* RIGHT IMAGE SECTION */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.8, rotate: 5 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            transition={{ duration: 1 }}
+            className="relative w-full md:w-1/2 flex items-center justify-center"
+          >
+            <div className="absolute inset-0 bg-green-200/50 rounded-full blur-[120px] scale-75 animate-pulse"></div>
             <img
               src="https://res.cloudinary.com/ds8w1kut5/image/upload/v1766763538/bowl_pddmxo.png"
               alt="Salad Bowl"
-              className="w-full max-w-[450px] h-auto object-contain"
+              className="w-full max-w-[550px] lg:max-w-[650px] h-auto object-contain drop-shadow-[0_35px_35px_rgba(0,0,0,0.2)] hover:scale-105 transition-transform duration-700"
             />
-          </div>
+          </motion.div>
 
         </div>
       </div>
     </div>
   );
 }
+
+// ---------- WHY CHOOSE US ----------
 function WhyChooseUs() {
-  // Data array for the four feature cards
   const features = [
-    {
-      icon: <Truck className="w-6 h-6 text-orange-600" />,
-      title: "Free Shipping",
-      desc: "On all orders above ₹500"
-    },
-    {
-      icon: <Leaf className="w-6 h-6 text-orange-600" />,
-      title: "100% Organic",
-      desc: "Certified organic produce"
-    },
-    {
-      icon: <Clock className="w-6 h-6 text-orange-600" />,
-      title: "24/7 Support",
-      desc: "Contact us anytime"
-    },
-    {
-      icon: <Zap className="w-6 h-6 text-orange-600" />,
-      title: "Express Delivery",
-      desc: "Get it within 24 hours"
-    },
+    { icon: <Truck className="w-8 h-8 text-white" />, title: "Free Shipping", desc: "Above ₹500", bg: "bg-orange-500" },
+    { icon: <Leaf className="w-8 h-8 text-white" />, title: "100% Organic", desc: "Certified Produce", bg: "bg-green-600" },
+    { icon: <Clock className="w-8 h-8 text-white" />, title: "24/7 Support", desc: "Always Online", bg: "bg-blue-500" },
+    { icon: <Zap className="w-8 h-8 text-white" />, title: "Express", desc: "Within 24 Hours", bg: "bg-yellow-500" },
   ];
 
   return (
-    <div className="bg-green-50 p-4 sm:p-6 md:p-8 relative overflow-hidden z-0">
-      <div
-        className="mx-auto py-6 sm:py-8 md:py-10 px-4 sm:px-6 md:px-8 mt-3 rounded-3xl shadow-xl"
-        style={{
-          backgroundImage: "url('https://res.cloudinary.com/ds8w1kut5/image/upload/v1766763353/new_hd2vs0.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundColor: "#f9f9f9",
-        }}
-      >
-        {/* Section Title */}
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8 md:mb-12 text-center md:text-left">
-          Why Choose Us?
-        </h2>
-
-        {/* Responsive Grid for Feature Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-          {features.map((feature, index) => (
-            <div
-              key={index}
-              className="flex items-start p-4 sm:p-5 md:p-6 bg-white border border-gray-200 rounded-xl shadow-md transition duration-300 hover:shadow-lg"
+    <div className="bg-white py-20 px-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">Why FreshCart?</h2>
+          <div className="w-24 h-2 bg-green-500 mx-auto rounded-full"></div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {features.map((f, i) => (
+            <motion.div 
+              whileHover={{ y: -10 }}
+              key={i} 
+              className="p-8 bg-gray-50 rounded-[2rem] border border-gray-100 shadow-xl shadow-gray-200/50 flex flex-col items-center text-center transition-all"
             >
-              <div className="mr-3 sm:mr-4 mt-1 flex-shrink-0">
-                {feature.icon}
+              <div className={`${f.bg} p-4 rounded-2xl mb-6 shadow-lg`}>
+                {f.icon}
               </div>
-
-
-              <div>
-                <h3 className="text-base sm:text-lg font-semibold text-gray-900">
-                  {feature.title}
-                </h3>
-                <p className="text-sm sm:text-base text-gray-500 mt-0.5">
-                  {feature.desc}
-                </p>
-              </div>
-            </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">{f.title}</h3>
+              <p className="text-gray-500 font-medium">{f.desc}</p>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -191,183 +146,77 @@ function WhyChooseUs() {
   );
 }
 
+// ---------- SLIDER SECTION ----------
 function Slider() {
   const slides = [
     {
       image: "https://res.cloudinary.com/ds8w1kut5/image/upload/v1766763385/slide1_zeufua.png",
       title: "The Fresh Organic",
       highlight: "Vegetables",
-      subtitle: "Vegetables You Should Be Eating",
+      subtitle: "NATURE'S BEST FOR YOU",
     },
     {
       image: "https://res.cloudinary.com/ds8w1kut5/image/upload/v1766763390/slide2_lhxwye.png",
       title: "Healthy & Juicy",
       highlight: "Fruits",
-      subtitle: "Get the Best from Nature",
-    },
-    {
-      image: "https://res.cloudinary.com/ds8w1kut5/image/upload/v1766763390/slide3_mfjlpj.png",
-      title: "100% Organic Farm",
-      highlight: "Goodness",
-      subtitle: "Eat Fresh, Live Fresh",
+      subtitle: "SWEETNESS WITHOUT GUILT",
     },
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [fade, setFade] = useState(false);
 
-  // Auto slide effect
   useEffect(() => {
-    const interval = setInterval(() => handleNext(), 7000);
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+    }, 5000);
     return () => clearInterval(interval);
-  }, []);
-
-  // Common fade function
-  const handleTransition = (nextIndex) => {
-    setFade(true); // start fade out
-    setTimeout(() => {
-      setCurrentIndex(nextIndex); // change slide after fade-out
-      setFade(false); // fade-in new one
-    }, 400); // timing matches duration-700 (approx 0.4s)
-  };
-
-  const handlePrev = () => {
-    const newIndex = currentIndex === 0 ? slides.length - 1 : currentIndex - 1;
-    handleTransition(newIndex);
-  };
-
-  const handleNext = () => {
-    const newIndex = currentIndex === slides.length - 1 ? 0 : currentIndex + 1;
-    handleTransition(newIndex);
-  };
+  }, [slides.length]);
 
   return (
-    <div className="relative bg-gray-50 py-8 sm:py-10 md:py-16">
-      {/* Main Slider Container */}
-      <div className="relative w-full max-w-7xl mx-auto overflow-hidden rounded-3xl shadow-2xl h-[450px] sm:h-[550px] md:h-[600px] lg:h-[650px]">
-
-        {/* Background */}
-        <div
-          className="absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-700"
-          style={{ backgroundImage: "url('/new.jpg')" }}
-        ></div>
-
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-green-900/80 via-green-800/60 to-transparent"></div>
-
-        {/* Content */}
-        <div className="relative h-full flex flex-col-reverse md:flex-row items-center justify-between p-6 sm:p-10 md:p-14 lg:p-20 z-10">
-
-          {/* LEFT TEXT */}
-          <div
-            className={`w-full md:w-1/2 text-white text-center md:text-left transition-opacity duration-700 ${fade ? "opacity-0" : "opacity-100"
-              } space-y-4 sm:space-y-6`}
+    <div className="py-20 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="relative overflow-hidden rounded-[3rem] bg-green-900 h-[500px] md:h-[600px] shadow-2xl">
+          <motion.div 
+            key={currentIndex}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+            className="absolute inset-0 flex flex-col md:flex-row items-center p-12 lg:p-20"
           >
-            <p className="text-green-200 text-base sm:text-lg md:text-xl font-semibold tracking-wide">
-              {slides[currentIndex].subtitle}
-            </p>
-
-            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-snug sm:leading-tight">
-              {slides[currentIndex].title} <br />
-              <span className="text-lime-400">{slides[currentIndex].highlight}</span>
-            </h1>
-
-            <button
-              onClick={() => (window.location.href = "/menu")}
-              className="bg-lime-400 text-green-900 text-sm sm:text-lg font-bold px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl shadow-xl hover:bg-lime-300 transition duration-300 transform hover:scale-[1.03]"
-            >
-              Shop Now
-            </button>
-
-            {/* Feature Pills */}
-            <div className="flex flex-wrap justify-center md:justify-start gap-2 sm:gap-3 mt-3 sm:mt-5">
-              <FeaturePill
-                icon={<FaCheckCircle className="text-lime-400 w-4 h-4" />}
-                text="100% Organic"
-              />
-              <FeaturePill
-                icon={<Truck className="text-orange-400 w-4 h-4" />}
-                text="Fast Delivery"
-              />
-              <FeaturePill
-                icon={<Smile className="text-yellow-400 w-4 h-4" />}
-                text="Healthy & Happy"
-              />
+            <div className="flex-1 text-white text-center md:text-left">
+              <p className="text-lime-400 font-bold tracking-[0.3em] mb-4 uppercase">{slides[currentIndex].subtitle}</p>
+              <h2 className="text-4xl md:text-7xl font-black mb-8 leading-tight">
+                {slides[currentIndex].title} <br />
+                <span className="text-lime-400 italic">{slides[currentIndex].highlight}</span>
+              </h2>
+              <button onClick={() => window.location.href='/menu'} className="bg-white text-green-900 px-10 py-4 rounded-2xl font-black text-lg hover:bg-lime-400 transition-colors">
+                SHOP NOW
+              </button>
             </div>
-          </div>
-
-          {/* RIGHT IMAGE */}
-          <div
-            className={`w-full md:w-1/2 h-60 sm:h-80 md:h-full flex items-center justify-center relative transition-opacity duration-700 ${fade ? "opacity-0" : "opacity-100"
-              }`}
-          >
-            <img
-              src={slides[currentIndex].image}
-              alt={`Slide ${currentIndex + 1}`}
-              className="object-contain w-[80%] sm:w-[70%] md:w-[85%] lg:w-[90%] max-h-full"
-            />
-          </div>
-        </div>
-
-        {/* Dots */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
-          {slides.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => handleTransition(idx)}
-              className={`w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full transition-all ${idx === currentIndex
-                  ? "bg-lime-400 scale-110"
-                  : "bg-white/60"
-                }`}
-            ></button>
-          ))}
+            <div className="flex-1 mt-10 md:mt-0">
+              <img src={slides[currentIndex].image} className="w-full h-auto max-h-[400px] object-contain drop-shadow-2xl" alt="slide" />
+            </div>
+          </motion.div>
         </div>
       </div>
-
-      {/* Arrows */}
-      <button
-        onClick={handlePrev}
-        className="absolute top-1/2 left-3 sm:left-6 -translate-y-1/2 bg-white/70 hover:bg-white p-2 sm:p-3 rounded-full shadow-md transition z-30"
-      >
-        <ChevronLeft className="w-5 sm:w-6 md:w-7 h-5 sm:h-6 md:h-7 text-gray-800" />
-      </button>
-
-      <button
-        onClick={handleNext}
-        className="absolute top-1/2 right-3 sm:right-6 -translate-y-1/2 bg-white/70 hover:bg-white p-2 sm:p-3 rounded-full shadow-md transition z-30"
-      >
-        <ChevronRight className="w-5 sm:w-6 md:w-7 h-5 sm:h-6 md:h-7 text-gray-800" />
-      </button>
     </div>
   );
 }
 
-
-// Simple utility component for USPs (unchanged)
-const FeaturePill = ({ text, icon }) => (
-  <div className="flex items-center text-white text-sm">
-    <span className="text-action-green mr-2 text-xl font-bold">{icon}</span>
-    <span className="text-white font-medium">{text}</span>
-  </div>
-);
-
-
-
-
-
+// ---------- MAIN HOME COMPONENT ----------
 export default function Home() {
-
-
-
   return (
-    <>
-
+    <div className="overflow-x-hidden">
       <FoodLanding />
       <WhyChooseUs />
       <Slider />
-      <TopProducts />
-
-
-    </>
+      <div className="py-20">
+        <div className="max-w-7xl mx-auto px-6 mb-12 flex flex-col items-center">
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900">Top Products</h2>
+            <div className="w-20 h-2 bg-orange-500 mt-4 rounded-full"></div>
+        </div>
+        <TopProducts />
+      </div>
+    </div>
   );
 }

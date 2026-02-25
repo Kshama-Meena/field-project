@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useLike } from "./context/LikeContext";
-import { FaRegHeart, FaShoppingCart , FaHeart} from "react-icons/fa";
+import { motion } from "framer-motion";
+import { FaRegHeart, FaShoppingCart, FaHeart } from "react-icons/fa";
 import { useCart } from "./context/CartContext";
 import { useAuth } from "./context/AuthContext";
 import ProductCard from "./ProductCard";
@@ -10,14 +11,14 @@ function Vegetable() {
 
   const { toggleLike, isLiked } = useLike();
   const { addToCart } = useCart();
-    const { user } = useAuth();
+  const { user } = useAuth();
 
   // Fetch vegetable category products from database
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const res = await axios.get("http://localhost:5000/api/products");
-        
+
         // Filter only vegetable category items
         const vegData = res.data.filter(
           item => item.category?.toLowerCase() === "vegetable"
@@ -49,7 +50,7 @@ function Vegetable() {
           </button>
         </div>
 
-        <div className="md:w-1/2 flex justify-center md:justify-end items-center mt-6 md:mt-0">
+        <div className="md:w-1/2 flex justify-center md:justify-end items-center mt-6 md:mt-7">
           <img
             src="https://res.cloudinary.com/ds8w1kut5/image/upload/v1766763411/vegi_dj5nwi.png"
             alt="A wooden crate full of fresh vegetables"
@@ -62,14 +63,14 @@ function Vegetable() {
       <div className="bg-[#f0fdf4] py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-8xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
           {products1.map((item) => (
-             <ProductCard
-                           key={item._id}
-                           product={item}
-                           toggleLike={toggleLike}
-                           isLiked={isLiked}
-                           addToCart={addToCart}
-                           user={user}
-                         />
+            <ProductCard
+              key={item._id}
+              product={item}
+              toggleLike={toggleLike}
+              isLiked={isLiked}
+              addToCart={addToCart}
+              user={user}
+            />
           ))}
         </div>
       </div>
